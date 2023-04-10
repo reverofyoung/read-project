@@ -7,7 +7,7 @@ import store from './redux/store';
 
 import "react-native-gesture-handler";
 
-// Screens
+// import screens 
 import Home from './screens/Home';
 import Search from './screens/Search';
 import BookState from './screens/BookState';
