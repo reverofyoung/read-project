@@ -10,15 +10,17 @@ import { bookClick } from '../redux/book';
 function Search({ navigation: { navigate } }) 
 {
   const dispatch = useDispatch()
-  const bookStatus = useSelector((state) => state.book.value)
+  
+  const thisClickBookData = useSelector((state) => state.book.value)
 
   const [searchText, setSearchText] = useState('');
   const [getBookData, setGetBookData] = useState();
   const [bookData, setBookData] = useState();  
+  const [clickBookData, setClickBookData] = useState({title: '', isbn: '', status: ''}
+) 
+  const [modalVisible, setModalVisible] = useState(false);
 
   const SERACH_BOOK_API = "491f7507dab4e628fde67856003319a6";
-
-  console.log(bookStatus);
 
   // 헤더에 검색창..안됨..
   // React.useLayoutEffect(() => {
@@ -34,8 +36,6 @@ function Search({ navigation: { navigate } })
   //   }, [navigation]);
 
   
-
-
   // 입력값 받아오기
   const onChangeText = (value) => {
     setSearchText(value);
@@ -66,42 +66,66 @@ function Search({ navigation: { navigate } })
   };
 
   // 책 클릭 시 
-  const clickBook = () => {
+  const onClickBook = () => {
     console.log('클릭');
+    setModalVisible(!modalVisible);
   };
+  // console.log(thisClickBookData);
 
-  // console.log('bookData : ', bookData);
+  console.log(thisClickBookData);
 
   return (
     <View style={{ backgroundColor: '#fff', paddingHorizontal: 20 }}  >
-        <View style={ styles.searchArea }>
-          <TextInput 
-            onChangeText={ onChangeText }
-            placeholder='도서명, 저자명으로 검색'
-            style={{ backgroundColor: 'lightgrey' , borderRadius: 5, color: 'grey', padding: 12, width: '80%' }}
-            value={ searchText }
-          />
-          <TouchableOpacity onPress={ getSearchBookData }>
-              <Text>검색</Text>
-          </TouchableOpacity>
-        </View>
-        <ScrollView style={{ height: '100%' }}>
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }  }>
-            { bookData !== undefined ? bookData.map((thisResult) => {
-              const datakey = thisResult.isbn;
-              // console.log('thisResult :', thisResult);
+      {/* 검색 영역 */}
+      <View style={ styles.searchArea }>
+        <TextInput 
+          onChangeText={ onChangeText }
+          placeholder='도서명, 저자명으로 검색'
+          style={{ backgroundColor: 'lightgrey' , borderRadius: 5, color: 'grey', padding: 12, width: '80%' }}
+          value={ searchText }
+        />
+        <TouchableOpacity onPress={ getSearchBookData }>
+          <Text>검색</Text>
+        </TouchableOpacity>
+      </View>
 
-              return (
-                <TouchableOpacity key={ datakey } onPress={ () => dispatch(bookClick({title: thisResult.title, isbn: thisResult.isbn, status: "클릭"}))}>
-                  <View>
-                    <Image style={{ height: 180, width: 120 }} source={{ url: thisResult.thumbnail }} />
-                  </View>
-                  <Text style={{ width: 120 }}>{ thisResult.authors + ' / ' + thisResult.title }</Text>
-                </TouchableOpacity>
-              )
-            }) : null }
-          </View>
-        </ScrollView>
+      {/* 스크롤 영역 */}
+      <ScrollView style={{ height: '100%' }}>
+        <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }  }>
+          { bookData !== undefined ? bookData.map((thisResult) => {
+            const datakey = thisResult.isbn;
+            // console.log('thisResult :', thisResult);
+
+            return (
+              <TouchableOpacity 
+                key={ datakey } 
+                // onPress={ setModalVisible(!modalVisible) }
+                // onPress={ onClickBook }
+                onPress={ () => dispatch(bookClick({title: thisResult.title, isbn: thisResult.isbn, status: "클릭"}))}
+                // onShow={ () => dispatch(bookClick({title: thisResult.title, isbn: thisResult.isbn, status: "클릭"})) }
+              >
+                <View>
+                  <Image style={{ height: 180, width: 120 }} source={{ url: thisResult.thumbnail }} />
+                </View>
+                <Text style={{ width: 120 }}>{ thisResult.authors + ' / ' + thisResult.title }</Text>
+              </TouchableOpacity>
+            )
+          }) : null }
+        </View>
+      </ScrollView>
+
+      {/* 검색 영역 */}
+      <Modal
+        animationType='slide'
+        transparent={ true }
+        visible={ modalVisible }
+      >
+        <View style={ styles.modalView }>
+          <Text>
+            
+          </Text>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -111,12 +135,18 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'grey',
   },
-
   searchArea: {
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-  //   paddingVertical: 20,
+  },
+  modalView: {
+    alignItems: 'center', 
+    backgroundColor: 'grey', 
+    justifyContent: 'center', 
+    marginHorizontal: 30, 
+    marginVertical: 200, 
+    padding: 40,
   }
 });
 
