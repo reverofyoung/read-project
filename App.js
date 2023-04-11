@@ -7,10 +7,10 @@ import store from './redux/store';
 
 import "react-native-gesture-handler";
 
-// Import screens 
-import Home from './screens/Home';
-import Search from './screens/Search';
-import BookState from './screens/BookState';
+// Import pages 
+import Home from './pages/Home';
+import Search from './pages/Search';
+// import BookState from './pages/BookState';
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -24,7 +24,7 @@ export default function App() {
           </Stack.Group>
           <Stack.Group screenOptions={{ headerBackTitleVisible: false }}>
             <Stack.Screen name="Search" component={ Search }  options={{title: ''}} />
-            <Stack.Screen name="BookState" component={ BookState }  options={{title: ''}} />
+            {/* <Stack.Screen name="BookState" component={ BookState }  options={{title: ''}} /> */}
           </Stack.Group>
         </Stack.Navigator>
       </NavigationContainer>

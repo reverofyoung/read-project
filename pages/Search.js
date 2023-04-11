@@ -5,24 +5,24 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Image, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-import { bookClick } from '../redux/book';
+import { clickedBook } from '../redux/book';
 
 function Search({ navigation: { navigate } }) 
 {
   const dispatch = useDispatch()
-  
-  const thisClickBookData = useSelector((state) => state.book.value)
 
-  const [searchText, setSearchText] = useState('');
-  const [getBookData, setGetBookData] = useState();
-  const [bookData, setBookData] = useState();  
-  const [clickBookData, setClickBookData] = useState({title: '', isbn: '', status: ''}
+  const SERACH_BOOK_API = "491f7507dab4e628fde67856003319a6";
+  const importedClickedBookData = useSelector((state) => state.book.value)
+
+  const [searchWord, setSearchWord] = useState('');
+  const [responseBooksData, setResponseBooksData] = useState();
+  const [totalBooksData, setTotalBooksData] = useState();  
+  const [clickedBookData, setClickedBookData] = useState({title: '', isbn: '', status: ''}
 ) 
   const [modalVisible, setModalVisible] = useState(false);
 
-  const SERACH_BOOK_API = "491f7507dab4e628fde67856003319a6";
 
-  // 헤더에 검색창..안됨..
+  // 헤더에 검색창..안됨..ß
   // React.useLayoutEffect(() => {
   //     navigation.setOptions({
   //         headerShadowVisible: false,
@@ -38,26 +38,26 @@ function Search({ navigation: { navigate } })
   
   // 입력값 받아오기
   const onChangeText = (value) => {
-    setSearchText(value);
+    setSearchWord(value);
   };
 
   // 검색한 책 데이터 받아오기
-  const getSearchBookData = () => {
+  const getSearchBooksData = () => {
     axios({
       method: "GET",
       url: "https://dapi.kakao.com/v3/search/book?target=title",
-      params: { query: searchText },
+      params: { query: searchWord },
       headers:{
         Authorization: `KakaoAK ${SERACH_BOOK_API}`
       },
     })
     .then(function (response) {
       // 검색된 도서 데이터 state에 담기
-      const preBookData = JSON.parse(response.request.response);
-      setGetBookData(preBookData);
+      const getResponseData = JSON.parse(response.request.response);
+      setResponseBooksData(getResponseData);
 
-      if(getBookData !== undefined) {
-        setBookData(getBookData.documents);
+      if(responseBooksData !== undefined) {
+        setTotalBooksData(responseBooksData.documents);
       };
     })
     .catch(function(error){
@@ -70,9 +70,8 @@ function Search({ navigation: { navigate } })
     console.log('클릭');
     setModalVisible(!modalVisible);
   };
-  // console.log(thisClickBookData);
 
-  console.log(thisClickBookData);
+  console.log(importedClickedBookData);
 
   return (
     <View style={{ backgroundColor: '#fff', paddingHorizontal: 20 }}  >
@@ -82,9 +81,9 @@ function Search({ navigation: { navigate } })
           onChangeText={ onChangeText }
           placeholder='도서명, 저자명으로 검색'
           style={{ backgroundColor: 'lightgrey' , borderRadius: 5, color: 'grey', padding: 12, width: '80%' }}
-          value={ searchText }
+          value={ searchWord }
         />
-        <TouchableOpacity onPress={ getSearchBookData }>
+        <TouchableOpacity onPress={ getSearchBooksData }>
           <Text>검색</Text>
         </TouchableOpacity>
       </View>
@@ -92,7 +91,7 @@ function Search({ navigation: { navigate } })
       {/* 스크롤 영역 */}
       <ScrollView style={{ height: '100%' }}>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }  }>
-          { bookData !== undefined ? bookData.map((thisResult) => {
+          { totalBooksData !== undefined ? totalBooksData.map((thisResult) => {
             const datakey = thisResult.isbn;
             // console.log('thisResult :', thisResult);
 
@@ -100,9 +99,7 @@ function Search({ navigation: { navigate } })
               <TouchableOpacity 
                 key={ datakey } 
                 // onPress={ setModalVisible(!modalVisible) }
-                // onPress={ onClickBook }
-                onPress={ () => dispatch(bookClick({title: thisResult.title, isbn: thisResult.isbn, status: "클릭"}))}
-                // onShow={ () => dispatch(bookClick({title: thisResult.title, isbn: thisResult.isbn, status: "클릭"})) }
+                onPress={ () => dispatch(clickedBook({title: thisResult.title, isbn: thisResult.isbn, status: "클릭"}))}
               >
                 <View>
                   <Image style={{ height: 180, width: 120 }} source={{ url: thisResult.thumbnail }} />

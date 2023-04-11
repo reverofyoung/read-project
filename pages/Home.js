@@ -5,7 +5,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 function Home({navigation}) {
   const [menuVisible, setMenuVisible] = useState(false);
   
-  const clickMenuBtn = () => {
+  const onClickMenuBtn = () => {
     !menuVisible ? setMenuVisible(true) : setMenuVisible(false);
   };
 
@@ -29,7 +29,7 @@ function Home({navigation}) {
 
         </View>
 
-        <TouchableOpacity onPress={ clickMenuBtn }>
+        <TouchableOpacity onPress={ onClickMenuBtn }>
           { 
             !menuVisible ? <Text style={{ padding: 5, borderRadius: 20 }}>⭕️</Text> : 
             <Text style={{ padding: 5, borderRadius: 20 }}>❌</Text> 
@@ -38,7 +38,7 @@ function Home({navigation}) {
 
         {/* <Button 
           title= { !menuVisible ? '메뉴 열기' : '메뉴 닫기' }
-          onPress={ clickMenuBtn }  
+          onPress={ onClickMenuBtn }  
         /> */}
       </View>
     </View>

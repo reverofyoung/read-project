@@ -10,12 +10,12 @@ export const bookSlice = createSlice({
         }
     }, 
     reducers: { // 상태가 변하면 어떻게 실행될지
-        bookClick: (state, action) => {
+        clickedBook: (state, action) => {
             state.value = action.payload
             // state -> 우리가 잡아놓은 초기값의 value를 가져오는 역할
             // actions안에 payload랑 type -> 데이터를 원하는 곳에다가 넘겨주는 역할
         },
     },
 });
-export const { bookClick } = bookSlice.actions;
+export const { clickedBook } = bookSlice.actions;
 export default bookSlice.reducer;
