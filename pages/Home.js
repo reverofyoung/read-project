@@ -9,26 +9,12 @@ function Home({navigation}) {
     !menuVisible ? setMenuVisible(true) : setMenuVisible(false);
   };
 
-  // const clickSearch = () => {
-  //   console.log('책검색');
-  //   setSearchInputVisible(true);
-  // };
 
   return (
     <View style={styles.container}>
       <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-        <View style={{ flexDirection: 'row', display: !menuVisible ? 'none' : 'flex'}}>
-          <Button 
-            title={ '책검색' } 
-            onPress={ () => navigation.navigate('Search') }
-          />
-          
-          <Button 
-            title={ '내서재' }
-          />
 
-        </View>
-
+        {/* 메뉴 버튼 0n/Off */}
         <TouchableOpacity onPress={ onClickMenuBtn }>
           { 
             !menuVisible ? <Text style={{ padding: 5, borderRadius: 20 }}>⭕️</Text> : 
@@ -36,6 +22,16 @@ function Home({navigation}) {
           }
         </TouchableOpacity>
 
+        <View style={{ flexDirection: 'row', display: !menuVisible ? 'none' : 'flex'}}>
+          <Button 
+            title={ '책검색' } 
+            onPress={ () => navigation.navigate('Search') }
+          />
+          <Button 
+            title={ '내서재' }
+            onPress={ () => navigation.navigate('MyLibrary') }
+          />
+        </View>
         {/* <Button 
           title= { !menuVisible ? '메뉴 열기' : '메뉴 닫기' }
           onPress={ onClickMenuBtn }  

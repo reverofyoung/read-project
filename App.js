@@ -10,6 +10,7 @@ import "react-native-gesture-handler";
 // Import pages 
 import Home from './pages/Home';
 import Search from './pages/Search';
+import MyLibrary from './pages/MyLibrary';
 // import BookState from './pages/BookState';
 
 export default function App() {
@@ -24,7 +25,9 @@ export default function App() {
           </Stack.Group>
           <Stack.Group screenOptions={{ headerBackTitleVisible: false }}>
             <Stack.Screen name="Search" component={ Search }  options={{title: ''}} />
-            {/* <Stack.Screen name="BookState" component={ BookState }  options={{title: ''}} /> */}
+          </Stack.Group>
+          <Stack.Group>
+            <Stack.Screen name="MyLibrary" component={ MyLibrary }  options={{title: '내 서재'}} />
           </Stack.Group>
         </Stack.Navigator>
       </NavigationContainer>

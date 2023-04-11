@@ -4,9 +4,9 @@ export const bookSlice = createSlice({
     name: "book", // 리듀서 이름
     initialState: { // 데이터의 초기값
         value: {
-            title: "", 
-            isbn: "", 
-            status: ""
+            // title: "", 
+            // isbn: "", 
+            // status: ""
         }
     }, 
     reducers: { // 상태가 변하면 어떻게 실행될지
