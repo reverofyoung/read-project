@@ -3,8 +3,10 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Provider } from 'react-redux';
-import store from './redux/store';
+import { persistStore } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
 
+import store from './redux/store';
 import "react-native-gesture-handler";
 
 // Import pages 

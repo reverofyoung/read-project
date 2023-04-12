@@ -12,14 +12,16 @@ function Search({ navigation: { navigate } })
   const dispatch = useDispatch()
 
   const SERACH_BOOK_API = "491f7507dab4e628fde67856003319a6";
-  const importedClickedBookData = useSelector((state) => state.book.value)
+  // const totalBookData = useSelector((state) => state.book.value)
 
   const [searchWord, setSearchWord] = useState('');
   const [responseBooksData, setResponseBooksData] = useState();
-  const [totalBooksData, setTotalBooksData] = useState();  
-  // const [clickedBookData, setClickedBookData] = useState({title: '', isbn: '', status: ''});
+  const [searchBookResults, setSearchBookResults] = useState();  
+  const [clickedBookData, setClickedBookData] = useState({ authors: '', title: '', isbn: '', readingStatus: '' });
+  const [totalBookData, setTotalBookData] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
-
+  
+  const [testData, setTestData] = useState(useSelector((state) => state.book.value));
 
   // 헤더에 검색창..안됨..
   // React.useLayoutEffect(() => {
@@ -56,7 +58,7 @@ function Search({ navigation: { navigate } })
       setResponseBooksData(getResponseData);
 
       if(responseBooksData !== undefined) {
-        setTotalBooksData(responseBooksData.documents);
+        setSearchBookResults(responseBooksData.documents);
       };
     })
     .catch(function(error){
@@ -66,18 +68,32 @@ function Search({ navigation: { navigate } })
 
   // 책 클릭 시 
   const onClickBook = (thisBook) => {
-    console.log(thisBook);
-    // dispatch(clickedBook({ thisBook }));
-    dispatch(clickedBook({ authors: thisBook.authors, title: thisBook.title , isbn: thisBook.isbn, thumbnail: thisBook.thumbnail }));
+    console.log('클릭한 책 : ', thisBook);
+    setClickedBookData(thisBook);
+
+    // if( thisBook.readingStatus === undefined ) {
+    //   console.log('없다')
+    //   // dispatch(clickedBook({ authors: thisBook.authors, title: thisBook.title , isbn: thisBook.isbn, thumbnail: thisBook.thumbnail }));
+    // } else {
+      //   console.log('이미 가지고 있네 : ', importedClickedtotalBookData);
+      // }
+      
     setModalVisible(!modalVisible);
   };
+  // console.log('clickedBookData : ', clickedBookData);
   
   const changeReadingStatus = () => {
-    dispatch(clickedBook({ ...importedClickedBookData, status: 'reading' }));
+    const newBookList = {
+      title: clickedBookData.title,
+      readingStatus : 'reading'
+    }
+    setTotalBookData([...totalBookData, newBookList]);
+    // dispatch(clickedBook([...totalBookData, newBookList]));
+
     setModalVisible(false);
   };
-  
-  console.log(importedClickedBookData);
+  console.log('totalBookData', totalBookData);
+  console.log('과연..', testData);
 
   return (
     <View style={{ backgroundColor: '#fff', paddingHorizontal: 20 }}  >
@@ -97,7 +113,7 @@ function Search({ navigation: { navigate } })
       {/* 스크롤 영역 */}
       <ScrollView style={{ height: '100%' }}>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }  }>
-          { totalBooksData !== undefined ? totalBooksData.map((thisBook) => {
+          { searchBookResults !== undefined ? searchBookResults.map((thisBook) => {
             const datakey = thisBook.isbn;
 
             return (
@@ -124,7 +140,7 @@ function Search({ navigation: { navigate } })
           <Text>
             <TouchableOpacity>
               {
-                importedClickedBookData.status === 'reading' ? <Button title={ '읽는중' } onPress={ changeReadingStatus } /> : <Button title={ '읽음' } onPress={ changeReadingStatus } />
+                totalBookData.status === 'reading' ? <Button title={ '읽는중' } onPress={ changeReadingStatus } /> : <Button title={ '읽음' } onPress={ changeReadingStatus } />
               }
             </TouchableOpacity>
             <Button title={'모달 닫기'} onPress={ () => setModalVisible(false) } />

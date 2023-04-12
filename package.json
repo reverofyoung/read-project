@@ -30,7 +30,8 @@
     "redux-logger": "^3.0.6"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "redux-persist": "^6.0.0"
   },
   "private": true
 }
