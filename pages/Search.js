@@ -5,23 +5,21 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Image, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-import { clickedBook } from '../redux/bookSlice';
+import { clickedBook, deleteBook } from '../redux/bookSlice';
 
 function Search({ navigation: { navigate } }) 
 {
   const dispatch = useDispatch()
 
   const SERACH_BOOK_API = "491f7507dab4e628fde67856003319a6";
-  // const totalBookData = useSelector((state) => state.book.value)
+  const totalBookData = useSelector((state) => state.book.value);
 
-  const [searchWord, setSearchWord] = useState('');
+  const [searcText, setSearcText] = useState('');
   const [responseBooksData, setResponseBooksData] = useState();
   const [searchBookResults, setSearchBookResults] = useState();  
-  const [clickedBookData, setClickedBookData] = useState({ authors: '', title: '', isbn: '', readingStatus: '' });
-  const [totalBookData, setTotalBookData] = useState({});
+  const [clickedBookData, setClickedBookData] = useState({});
+  const [isbnList, setIsnbList] = useState();
   const [modalVisible, setModalVisible] = useState(false);
-  
-  const [testData, setTestData] = useState(useSelector((state) => state.book.value));
 
   // 헤더에 검색창..안됨..
   // React.useLayoutEffect(() => {
@@ -39,7 +37,7 @@ function Search({ navigation: { navigate } })
   
   // 입력값 받아오기
   const onChangeText = (value) => {
-    setSearchWord(value);
+    setSearcText(value);
   };
 
   // 검색한 책 데이터 받아오기
@@ -47,7 +45,7 @@ function Search({ navigation: { navigate } })
     axios({
       method: "GET",
       url: "https://dapi.kakao.com/v3/search/book?target=title",
-      params: { query: searchWord },
+      params: { query: searcText },
       headers:{
         Authorization: `KakaoAK ${SERACH_BOOK_API}`
       },
@@ -67,33 +65,51 @@ function Search({ navigation: { navigate } })
   };
 
   // 책 클릭 시 
-  const onClickBook = (thisBook) => {
-    console.log('클릭한 책 : ', thisBook);
-    setClickedBookData(thisBook);
+  const onClickBook = (thisClickedBook) => {
+    console.log('클릭한 책 : ', thisClickedBook);
+    const filterBook = totalBookData.map((thisbook) => {
+      return thisbook
+    });
 
-    // if( thisBook.readingStatus === undefined ) {
-    //   console.log('없다')
-    //   // dispatch(clickedBook({ authors: thisBook.authors, title: thisBook.title , isbn: thisBook.isbn, thumbnail: thisBook.thumbnail }));
-    // } else {
-      //   console.log('이미 가지고 있네 : ', importedClickedtotalBookData);
-      // }
-      
+    filterBook.filter(thisResult => thisResult.isbn === )
+
+    setClickedBookData(thisClickedBook);
     setModalVisible(!modalVisible);
   };
   // console.log('clickedBookData : ', clickedBookData);
   
+  // 독서 상태 변경
   const changeReadingStatus = () => {
-    const newBookList = {
+
+    const newBookData = {
+      authors: clickedBookData.authors,
+      isbn: clickedBookData.isbn,
+      thumbnail: clickedBookData.thumbnail,
       title: clickedBookData.title,
-      readingStatus : 'reading'
+      readingStatus : 'reading',
     }
-    setTotalBookData([...totalBookData, newBookList]);
-    // dispatch(clickedBook([...totalBookData, newBookList]));
+
+    const isbnArr = totalBookData.map((thisBook) => {
+      return thisBook.isbn
+    })
+    
+    const isbnList = isbnArr.filter(thisResult => thisResult === clickedBookData.isbn);
+
+    if(isbnList.length === 0) {
+      // 책이 저장되어 있을 때
+      dispatch(clickedBook(newBookData));
+    } else {
+      // 책이 저장되어 있지 않을 때
+      const newBookList = totalBookData.filter(thisResult => thisResult.isbn !== clickedBookData.isbn);
+      console.log('이미 저장된 책의 상태를 변경했을 때 ', newBookList);
+
+      dispatch(deleteBook(newBookList));
+    }
 
     setModalVisible(false);
   };
-  console.log('totalBookData', totalBookData);
-  console.log('과연..', testData);
+
+  console.log('담겨있는 책 리스트', totalBookData);
 
   return (
     <View style={{ backgroundColor: '#fff', paddingHorizontal: 20 }}  >
@@ -103,7 +119,7 @@ function Search({ navigation: { navigate } })
           onChangeText={ onChangeText }
           placeholder='도서명, 저자명으로 검색'
           style={{ backgroundColor: 'lightgrey' , borderRadius: 5, color: 'grey', padding: 12, width: '80%' }}
-          value={ searchWord }
+          value={ searcText }
         />
         <TouchableOpacity onPress={ getSearchBooksData }>
           <Text>검색</Text>
@@ -113,25 +129,25 @@ function Search({ navigation: { navigate } })
       {/* 스크롤 영역 */}
       <ScrollView style={{ height: '100%' }}>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }  }>
-          { searchBookResults !== undefined ? searchBookResults.map((thisBook) => {
-            const datakey = thisBook.isbn;
+          { searchBookResults !== undefined ? searchBookResults.map((thisClickedBook) => {
+            const datakey = thisClickedBook.isbn;
 
             return (
               <TouchableOpacity 
                 key={ datakey } 
-                onPress={ () => onClickBook(thisBook) }
+                onPress={ () => onClickBook(thisClickedBook) }
               >
                 <View>
-                  <Image style={{ height: 180, width: 120 }} source={{ url: thisBook.thumbnail }} />
+                  <Image style={{ height: 180, width: 120 }} source={{ url: thisClickedBook.thumbnail }} />
                 </View>
-                <Text style={{ width: 120 }}>{ thisBook.authors + ' / ' + thisBook.title }</Text>
+                <Text style={{ width: 120 }}>{ thisClickedBook.authors + ' / ' + thisClickedBook.title }</Text>
               </TouchableOpacity>
             )
           }) : null }
         </View>
       </ScrollView>
 
-      {/* 검색 영역 */}
+      {/* 책 클릭시 나오는 모달 */}
       <Modal
         transparent={ true }
         visible={ modalVisible }
@@ -140,7 +156,8 @@ function Search({ navigation: { navigate } })
           <Text>
             <TouchableOpacity>
               {
-                totalBookData.status === 'reading' ? <Button title={ '읽는중' } onPress={ changeReadingStatus } /> : <Button title={ '읽음' } onPress={ changeReadingStatus } />
+                <Button title={ '읽음' } onPress={ changeReadingStatus } />
+                // clickedBookData.readingStatus === 'reading' ? <Button title={ '읽는중' } onPress={ changeReadingStatus } /> : <Button title={ '읽음' } onPress={ changeReadingStatus } />
               }
             </TouchableOpacity>
             <Button title={'모달 닫기'} onPress={ () => setModalVisible(false) } />

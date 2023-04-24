@@ -5,8 +5,9 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 function MyLibrary({navigation}) {
 
-const importedClickedBookData = useSelector((state) => state.book.value);
-console.log(importedClickedBookData);
+const importedBookData = useSelector((state) => state.book.value);
+  console.log('내서재', importedBookData);
+  
   return (
     <View style={styles.container}>
       
