@@ -9,7 +9,8 @@ export const bookReportSlice = createSlice({
         addReport: (state, action) => {
             // console.log(action.payload);
             const newReport= action.payload;
-            state.data = newReport;
+            // console.log(newReport);
+            state.data = [...state.data,{ content: newReport.content }];
             // state.data.push({
             //     content: newReport.content,
             //     date: '오늘 날짜',

@@ -11,7 +11,6 @@ function MyLibrary({navigation}) {
   const [myBookData, setMyBookData] = useState(useSelector((state) => state.book.books));
     
   const onClick = (thisData) => {
-    console.log(thisData);
     dispatch(addReport(thisData));
     navigation.navigate('CreateReport');
   };

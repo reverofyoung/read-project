@@ -7,8 +7,7 @@ import { Button, Image, Modal, ScrollView, StyleSheet, Text, TextInput, Touchabl
 
 import { addBook, deleteBook } from '../redux/bookSlice';
 
-function Search({ navigation: { navigate } }) 
-{
+function Search({ navigation: { navigate } }) {
   const dispatch = useDispatch();
 
   const SERACH_BOOK_API = "491f7507dab4e628fde67856003319a6";
@@ -18,7 +17,6 @@ function Search({ navigation: { navigate } })
   const [responseBooksData, setResponseBooksData] = useState();
   const [searchBookResults, setSearchBookResults] = useState();  
   const [clickedBookData, setClickedBookData] = useState({});
-  const [isbnList, setIsnbList] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   
   // 입력값 받아오기
@@ -50,14 +48,13 @@ function Search({ navigation: { navigate } })
     });
   };
 
-  // 책 클릭 시 
+  // 책 클릭 시 모달 열림
   const onClickBook = (thisClickedBook) => {
     console.log('클릭한 책 : ', thisClickedBook);
 
     setClickedBookData(thisClickedBook);
     setModalVisible(!modalVisible);
   };
-  // console.log('clickedBookData : ', clickedBookData);
   
   // 독서 상태 변경
   const changeReadingStatus = () => {
