@@ -12,7 +12,7 @@ function Search({ navigation: { navigate } })
   const dispatch = useDispatch()
 
   const SERACH_BOOK_API = "491f7507dab4e628fde67856003319a6";
-  const totalBookData = useSelector((state) => state.book.value);
+  const totalBookData = useSelector((state) => state.book.books);
 
   const [searcText, setSearcText] = useState('');
   const [responseBooksData, setResponseBooksData] = useState();
@@ -67,11 +67,6 @@ function Search({ navigation: { navigate } })
   // 책 클릭 시 
   const onClickBook = (thisClickedBook) => {
     console.log('클릭한 책 : ', thisClickedBook);
-    const filterBook = totalBookData.map((thisbook) => {
-      return thisbook
-    });
-
-    filterBook.filter(thisResult => thisResult.isbn === )
 
     setClickedBookData(thisClickedBook);
     setModalVisible(!modalVisible);
@@ -100,10 +95,7 @@ function Search({ navigation: { navigate } })
       dispatch(clickedBook(newBookData));
     } else {
       // 책이 저장되어 있지 않을 때
-      const newBookList = totalBookData.filter(thisResult => thisResult.isbn !== clickedBookData.isbn);
-      console.log('이미 저장된 책의 상태를 변경했을 때 ', newBookList);
-
-      dispatch(deleteBook(newBookList));
+      dispatch(deleteBook(clickedBookData.isbn));
     }
 
     setModalVisible(false);

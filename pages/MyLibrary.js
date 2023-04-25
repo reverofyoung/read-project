@@ -5,12 +5,22 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 
 function MyLibrary({navigation}) {
 
-const importedBookData = useSelector((state) => state.book.value);
-  console.log('내서재', importedBookData);
+const [myBookData, setMyBookData] = useState(useSelector((state) => state.book.books));
   
   return (
     <View style={styles.container}>
-      
+      {
+        myBookData.map((thisData) => {
+          const datakey = thisData.isbn;
+
+          return(
+            <View key={ datakey } style={styles.bookBox}>
+              <Text>{ thisData.title }</Text>
+              { thisData.readingStatus === 'reading' ? <Text>읽는중</Text> : <Text>기타</Text> }
+            </View>
+          )
+        })
+      }
     </View>
   );
 }
@@ -21,6 +31,10 @@ const styles = StyleSheet.create({
       backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'center',
+  },
+  bookBox: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   }
 });
 

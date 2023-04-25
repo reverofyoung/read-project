@@ -1,15 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export const bookSlice = createSlice({
-    
     name: "book", // 리듀서 이름
     initialState: { // 데이터의 초기값
-        value: []        
+        books: []        
     }, 
     reducers: { // 상태가 변하면 어떻게 실행될지
         clickedBook: (state, action) => {
             const newBook = action.payload;
-            state.value.push({
+            state.books.push({
                 authors: newBook.authors,
                 isbn: newBook.isbn,
                 thumbnail: newBook.thumbnail,
@@ -18,7 +17,8 @@ export const bookSlice = createSlice({
             });
         },
         deleteBook: (state, action) => {
-            state.value = action.payload;
+            const isbn = action.payload;
+            state.books = state.books.filter((book) => book.isbn !== isbn);
         },
     },
 });
