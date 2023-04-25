@@ -3,8 +3,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Provider } from 'react-redux';
-import { persistStore } from "redux-persist";
-import { PersistGate } from "redux-persist/integration/react";
 
 import store from './redux/store';
 import "react-native-gesture-handler";
@@ -13,7 +11,7 @@ import "react-native-gesture-handler";
 import Home from './pages/Home';
 import Search from './pages/Search';
 import MyLibrary from './pages/MyLibrary';
-// import BookState from './pages/BookState';
+import CreateReport from './pages/CreateReport';
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -24,6 +22,7 @@ export default function App() {
         <Stack.Navigator initialRouteName="Home">
           <Stack.Group screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Home" component={ Home } />
+            <Stack.Screen name="CreateReport" component={ CreateReport }  options={{title: ''}} />
           </Stack.Group>
           <Stack.Group screenOptions={{ headerBackTitleVisible: false }}>
             <Stack.Screen name="Search" component={ Search }  options={{title: ''}} />
@@ -31,6 +30,9 @@ export default function App() {
           <Stack.Group>
             <Stack.Screen name="MyLibrary" component={ MyLibrary }  options={{title: '내 서재'}} />
           </Stack.Group>
+          {/* <Stack.Group screenOptions={{ headerStyle: { border: 0 } }}>
+            <Stack.Screen name="CreateReport" component={ CreateReport }  options={{title: ''}} />
+          </Stack.Group> */}
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

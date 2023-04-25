@@ -9,7 +9,6 @@ function Home({navigation}) {
     !menuVisible ? setMenuVisible(true) : setMenuVisible(false);
   };
 
-
   return (
     <View style={styles.container}>
       <View style={{ alignItems: 'center', flexDirection: 'row' }}>
@@ -31,7 +30,12 @@ function Home({navigation}) {
             title={ '내서재' }
             onPress={ () => navigation.navigate('MyLibrary') }
           />
+           <Button 
+            title={ '글쓰기' }
+            onPress={ () => navigation.navigate('CreateReport') }
+          />
         </View>
+
         {/* <Button 
           title= { !menuVisible ? '메뉴 열기' : '메뉴 닫기' }
           onPress={ onClickMenuBtn }  

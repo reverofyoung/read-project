@@ -5,11 +5,11 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Image, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
-import { clickedBook, deleteBook } from '../redux/bookSlice';
+import { addBook, deleteBook } from '../redux/bookSlice';
 
 function Search({ navigation: { navigate } }) 
 {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const SERACH_BOOK_API = "491f7507dab4e628fde67856003319a6";
   const totalBookData = useSelector((state) => state.book.books);
@@ -20,20 +20,6 @@ function Search({ navigation: { navigate } })
   const [clickedBookData, setClickedBookData] = useState({});
   const [isbnList, setIsnbList] = useState();
   const [modalVisible, setModalVisible] = useState(false);
-
-  // 헤더에 검색창..안됨..
-  // React.useLayoutEffect(() => {
-  //     navigation.setOptions({
-  //         headerShadowVisible: false,
-  //         headerTintColor: 'grey',
-  //         // title: '책 검색',
-  //         headerSearchBarOptions: {
-  //         placeholder: '검색',
-  //         barTintColor: 'red'
-  //       },
-  //     });
-  //   }, [navigation]);
-
   
   // 입력값 받아오기
   const onChangeText = (value) => {
@@ -91,10 +77,10 @@ function Search({ navigation: { navigate } })
     const isbnList = isbnArr.filter(thisResult => thisResult === clickedBookData.isbn);
 
     if(isbnList.length === 0) {
-      // 책이 저장되어 있을 때
-      dispatch(clickedBook(newBookData));
-    } else {
       // 책이 저장되어 있지 않을 때
+      dispatch(addBook(newBookData));
+    } else {
+      // 책이 저장되어 있을 때
       dispatch(deleteBook(clickedBookData.isbn));
     }
 

@@ -6,7 +6,7 @@ export const bookSlice = createSlice({
         books: []        
     }, 
     reducers: { // 상태가 변하면 어떻게 실행될지
-        clickedBook: (state, action) => {
+        addBook: (state, action) => {
             const newBook = action.payload;
             state.books.push({
                 authors: newBook.authors,
@@ -23,5 +23,5 @@ export const bookSlice = createSlice({
     },
 });
 
-export const { clickedBook, deleteBook } = bookSlice.actions;
+export const { addBook, deleteBook } = bookSlice.actions;
 export default bookSlice.reducer;
