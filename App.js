@@ -1,5 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Provider } from 'react-redux';
@@ -13,6 +12,7 @@ import Search from './pages/Search';
 import MyLibrary from './pages/MyLibrary';
 import CreateReport from './pages/CreateReport';
 
+
 export default function App() {
   const Stack = createStackNavigator();
 
@@ -22,17 +22,14 @@ export default function App() {
         <Stack.Navigator initialRouteName="Home">
           <Stack.Group screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Home" component={ Home } />
-            <Stack.Screen name="CreateReport" component={ CreateReport }  options={{title: ''}} />
           </Stack.Group>
           <Stack.Group screenOptions={{ headerBackTitleVisible: false }}>
-            <Stack.Screen name="Search" component={ Search }  options={{title: ''}} />
+            <Stack.Screen name="Search" component={ Search } options={{ title: '' }} />
           </Stack.Group>
           <Stack.Group>
-            <Stack.Screen name="MyLibrary" component={ MyLibrary }  options={{title: '내 서재'}} />
+            <Stack.Screen name="MyLibrary" component={ MyLibrary } options={{ title: '내 서재' }} />
+            <Stack.Screen name="CreateReport" component={ CreateReport } options={{ title: '',  headerShadowVisible: false, }}/>  
           </Stack.Group>
-          {/* <Stack.Group screenOptions={{ headerStyle: { border: 0 } }}>
-            <Stack.Screen name="CreateReport" component={ CreateReport }  options={{title: ''}} />
-          </Stack.Group> */}
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

@@ -20,8 +20,12 @@ export const bookSlice = createSlice({
             const isbn = action.payload;
             state.books = state.books.filter((book) => book.isbn !== isbn);
         },
+        addReport: (state, action) => {
+            const newReport= action.payload;
+            state.books = newReport;
+        }
     },
 });
 
-export const { addBook, deleteBook } = bookSlice.actions;
+export const { addBook, deleteBook, addReport } = bookSlice.actions;
 export default bookSlice.reducer;

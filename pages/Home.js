@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
+import NavBar from "../components/NavBar";
+
 function Home({navigation}) {
   const [menuVisible, setMenuVisible] = useState(false);
   
@@ -36,10 +38,6 @@ function Home({navigation}) {
           />
         </View>
 
-        {/* <Button 
-          title= { !menuVisible ? '메뉴 열기' : '메뉴 닫기' }
-          onPress={ onClickMenuBtn }  
-        /> */}
       </View>
     </View>
   );
@@ -47,10 +45,10 @@ function Home({navigation}) {
   
 const styles = StyleSheet.create({
   container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 });
 
