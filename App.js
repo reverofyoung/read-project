@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { NavigationContainer } from "@react-navigation/native";
+import { DrawerActions, NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Provider } from 'react-redux';
 
@@ -11,14 +11,23 @@ import Home from './pages/Home';
 import Search from './pages/Search';
 import MyLibrary from './pages/MyLibrary';
 import CreateReport from './pages/CreateReport';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 
 export default function App() {
   const Stack = createStackNavigator();
+  const Drawer = createDrawerNavigator();
 
   return (
     <Provider store={ store }>
       <NavigationContainer>
+        {/* <Drawer.Navigator
+          initialRouteName="Home"
+          drawerPosition="left"
+          backBehavior="history">
+              <Drawer.Screen name="Home" component={Home} />
+              <Drawer.Screen name="Search" component={Search} />
+        </Drawer.Navigator> */}
         <Stack.Navigator initialRouteName="Home">
           <Stack.Group screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Home" component={ Home } />

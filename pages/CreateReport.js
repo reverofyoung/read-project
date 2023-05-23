@@ -6,18 +6,22 @@ import moment from "moment";
 import 'moment/locale/ko';
 
 import { theme } from '../common/colors';
-import { addReport } from "../redux/bookSlice";
+// 작동하지만 저장된 책 데이터와 연결 안됨..
+import { addBook, addReport } from "../redux/bookSlice";
 
 function CreateReport({navigation}) {
     const dispatch = useDispatch();
 
-    const reportData = useSelector((state) => state.book.books);
+    const [totalBook, setTotalBook] = useState(useSelector((state) => state.book.books));
+    const [reportData, setReportData] = useState(useSelector((state) => state.bookReport.data));
+    const [reportContent, setReportContent] = useState('');
+
     const date = new Date();
     const currentDate = moment(date).format('YYYY-MM-DD HH:mm');
 
-    const [reportContent, setReportContent] = useState('');
-    
-    console.log('reportData.content ', reportData );
+    console.log('저장되어 있는 모든 책 ', totalBook );
+
+    const currentBook = totalBook.filter((thisData) => reportData.isbn === thisData.isbn);
 
     const onChangeText = (value) => {
         setReportContent(value);
@@ -31,55 +35,70 @@ function CreateReport({navigation}) {
         };
         setReportContent('');
         dispatch(addReport(newReportData));
+        dispatch(addBook(newReportData));
     };
-    // console.log('코멘트 추가 후', reportData);
 
     return (
         <View style={ styles.container }>
-            <View style={ styles.titleArea }>
-                <View style={{ maxWidth: '73%' }}>
-                    <Text numberOfLines={ 1 } style={{ fontWeight: '600' }}>{ reportData.title }</Text>
-                </View>
-                <View style={{ minWidth: '20%' }}>
-                    { reportData.readingStatus === 'reading' ? <Text>읽는중</Text> : <Text>기타</Text> }
-                </View>
-            </View>
-            <View style={ styles.contentArea }>
-                <View>
-                    <Text>
-                        읽기 전 코멘트
-                    </Text>
-                </View>
+            {
+                currentBook.map((thisBook) => {
+                    const datakey = thisBook.isbn;
+                    
+                    return(
+                        <View key={ datakey }>
+                            {/* 책 타이틀, 독서 상태 */}
+                            <View style={ styles.titleArea }>
+                                <View style={{ maxWidth: '73%' }}>
+                                    <Text numberOfLines={ 1 } style={{ fontWeight: '600' }}>{ thisBook.title }</Text>
+                                </View>
+                                <View style={{ minWidth: '20%' }}>
+                                    { thisBook.readingStatus === 'reading' ? <Text>읽는중</Text> : <Text>기타</Text> }
+                                </View>
+                            </View>
 
-                    {
-                        reportData.content ===  undefined || reportData.content ===  '' ?
-                        <View>
-                            <TextInput
-                                multiline={ true }
-                                onChangeText={ onChangeText }
-                                placeholder='코멘트를 작성해주삼 '
-                                style={ styles.inputArea }
-                                textAlignVertical="top"
-                                value={ reportContent }
-                            />
-                        </View> : 
-                        <ScrollView 
-                            bounces={ true }
-                            keyboardDismissMode={ "on-drag" }
-                            style={ styles.scrollArea }
-                        >
-                            <Text>{ reportData.date } </Text>
-                            <Text>{ reportData.content } </Text>
-                        </ScrollView>
-                    }
-                   
-       
-            </View>
-            <View style={ styles.buttonArea }>
-                <TouchableOpacity>
-                    <Button title="코멘트 추가" color={ theme.mainRed } onPress={ saveReport } />
-                </TouchableOpacity>
-            </View>
+                            {/* 코멘트 영역 */}
+                            <View style={ styles.contentArea }>
+                                <View>
+                                    <Text>
+                                        읽기 전 코멘트
+                                    </Text>
+                                </View>
+
+                                {
+                                    thisBook.content ===  undefined || thisBook.content ===  '' ?
+                                    <View>
+                                        <TextInput
+                                            multiline={ true }
+                                            onChangeText={ onChangeText }
+                                            placeholder='코멘트를 작성해주삼 '
+                                            style={ styles.inputArea }
+                                            textAlignVertical="top"
+                                            value={ reportContent }
+                                        />
+                                    </View> : 
+                                    <ScrollView 
+                                        bounces={ true }
+                                        keyboardDismissMode={ "on-drag" }
+                                        style={ styles.scrollArea }
+                                    >
+                                        <Text>{ thisBook.date } </Text>
+                                        <Text>{ thisBook.content } </Text>
+                                    </ScrollView>
+                                }
+                        
+                            </View>
+
+                            {/* '코멘트 추가' 버튼 영역 */}
+                            <View style={ styles.buttonArea }>
+                                <TouchableOpacity>
+                                    <Button title="코멘트 추가" color={ theme.mainRed } onPress={ saveReport } />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        )
+                    })
+                }
+            
         </View>
     );
 }

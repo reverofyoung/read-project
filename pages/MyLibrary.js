@@ -3,18 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { View, Text, Button, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-import { addReport } from "../redux/bookReportSlice";
+import { getIsbn } from "../redux/bookReportSlice";
+import { addReport } from "../redux/bookSlice";
 
 function MyLibrary({navigation}) {
   const dispatch = useDispatch();
 
-  const myLibraryData = useSelector((state) => state.book.books);
-  // const reportData = useSelector((state) => state.bookReport.data);
+  const [myLibraryData, setMyLibraryData] = useState(useSelector((state) => state.book.books));
   console.log('myLibraryData:', myLibraryData);
     
   const onClickBook = (thisBookData) => {
-    console.log('thisBookData:', thisBookData);
     dispatch(addReport(thisBookData));
+    dispatch(getIsbn(thisBookData));
     navigation.navigate('CreateReport');
   };
 

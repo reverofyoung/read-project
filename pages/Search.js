@@ -50,7 +50,7 @@ function Search({ navigation: { navigate } }) {
 
   // 책 클릭 시 모달 열림
   const onClickBook = (thisClickedBook) => {
-    console.log('클릭한 책 : ', thisClickedBook);
+    // console.log('클릭한 책 : ', thisClickedBook);
 
     setClickedBookData(thisClickedBook);
     setModalVisible(!modalVisible);
@@ -65,11 +65,11 @@ function Search({ navigation: { navigate } }) {
       thumbnail: clickedBookData.thumbnail,
       title: clickedBookData.title,
       readingStatus : 'reading',
-    }
+    };
 
     const isbnArr = totalBookData.map((thisBook) => {
       return thisBook.isbn
-    })
+    });
     
     const isbnList = isbnArr.filter(thisResult => thisResult === clickedBookData.isbn);
 
@@ -132,7 +132,6 @@ function Search({ navigation: { navigate } }) {
             <TouchableOpacity>
               {
                 <Button title={ '읽음' } onPress={ changeReadingStatus } />
-                // clickedBookData.readingStatus === 'reading' ? <Button title={ '읽는중' } onPress={ changeReadingStatus } /> : <Button title={ '읽음' } onPress={ changeReadingStatus } />
               }
             </TouchableOpacity>
             <Button title={'모달 닫기'} onPress={ () => setModalVisible(false) } />

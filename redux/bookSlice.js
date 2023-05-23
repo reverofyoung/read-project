@@ -16,13 +16,17 @@ export const bookSlice = createSlice({
                 readingStatus : newBook.readingStatus,
             });
         },
+
         deleteBook: (state, action) => {
             const isbn = action.payload;
             state.books = state.books.filter((book) => book.isbn !== isbn);
         },
+
         addReport: (state, action) => {
             const newReport= action.payload;
-            state.books = newReport;
+            console.log('newReport', newReport);
+            state = newReport;
+      
         }
     },
 });

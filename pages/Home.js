@@ -6,6 +6,10 @@ import NavBar from "../components/NavBar";
 
 function Home({navigation}) {
   const [menuVisible, setMenuVisible] = useState(false);
+
+  const menuOpen = () => {
+    console.log('클릭');
+  };
   
   const onClickMenuBtn = () => {
     !menuVisible ? setMenuVisible(true) : setMenuVisible(false);
@@ -13,6 +17,9 @@ function Home({navigation}) {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={ () => navigation.openDrawer() }>
+        <Text>메뉴</Text>
+      </TouchableOpacity>
       <View style={{ alignItems: 'center', flexDirection: 'row' }}>
 
         {/* 메뉴 버튼 0n/Off */}

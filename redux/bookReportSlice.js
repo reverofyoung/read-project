@@ -6,7 +6,7 @@ export const bookReportSlice = createSlice({
         data: []        
     }, 
     reducers: { 
-        addReport: (state, action) => {
+        getIsbn: (state, action) => {
             // console.log(action.payload);
             const newReport= action.payload;
             state.data = newReport;
@@ -15,5 +15,5 @@ export const bookReportSlice = createSlice({
     },
 });
 
-export const { addReport } = bookReportSlice.actions;
+export const { getIsbn } = bookReportSlice.actions;
 export default bookReportSlice.reducer;
