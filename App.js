@@ -21,14 +21,14 @@ export default function App() {
   return (
     <Provider store={ store }>
       <NavigationContainer>
-        {/* <Drawer.Navigator
+        <Drawer.Navigator
           initialRouteName="Home"
           drawerPosition="left"
           backBehavior="history">
               <Drawer.Screen name="Home" component={Home} />
               <Drawer.Screen name="Search" component={Search} />
-        </Drawer.Navigator> */}
-        <Stack.Navigator initialRouteName="Home">
+        </Drawer.Navigator>
+        {/* <Stack.Navigator initialRouteName="Home">
           <Stack.Group screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Home" component={ Home } />
           </Stack.Group>
@@ -39,7 +39,7 @@ export default function App() {
             <Stack.Screen name="MyLibrary" component={ MyLibrary } options={{ title: '내 서재' }} />
             <Stack.Screen name="CreateReport" component={ CreateReport } options={{ title: '',  headerShadowVisible: false, }}/>  
           </Stack.Group>
-        </Stack.Navigator>
+        </Stack.Navigator> */}
       </NavigationContainer>
     </Provider>
   );
