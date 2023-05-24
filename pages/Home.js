@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-import NavBar from "../components/NavBar";
+import CreateReport from "./CreateReport";
 
 function Home({navigation}) {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -17,11 +17,13 @@ function Home({navigation}) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={ () => navigation.openDrawer() }>
+      {/* <TouchableOpacity onPress={ () => navigation.openDrawer() }>
         <Text>메뉴</Text>
-      </TouchableOpacity>
-      <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-
+      </TouchableOpacity> */}
+      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <View style={styles.container}>
+          <Button title="글쓰기로 가용" onPress={() => navigation.navigate('CreateReport')} />
+        </View>
         {/* 메뉴 버튼 0n/Off */}
         {/* <TouchableOpacity onPress={ onClickMenuBtn }>
           { 
