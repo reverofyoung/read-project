@@ -14,14 +14,14 @@ function Home({navigation}) {
       <View style={{ alignItems: 'center', flexDirection: 'row' }}>
 
         {/* 메뉴 버튼 0n/Off */}
-        <TouchableOpacity onPress={ onClickMenuBtn }>
+        {/* <TouchableOpacity onPress={ onClickMenuBtn }>
           { 
             !menuVisible ? <Text style={{ padding: 5, borderRadius: 20 }}>⭕️</Text> : 
             <Text style={{ padding: 5, borderRadius: 20 }}>❌</Text> 
           }
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
-        <View style={{ flexDirection: 'row', display: !menuVisible ? 'none' : 'flex'}}>
+        {/* <View style={{ flexDirection: 'row', display: !menuVisible ? 'none' : 'flex'}}>
           <Button 
             title={ '책검색' } 
             onPress={ () => navigation.navigate('Search') }
@@ -34,7 +34,7 @@ function Home({navigation}) {
             title={ '글쓰기' }
             onPress={ () => navigation.navigate('CreateReport') }
           />
-        </View>
+        </View> */}
 
       </View>
     </View>

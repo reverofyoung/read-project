@@ -1,13 +1,12 @@
 import React, { useState } from "react";
+import moment from "moment";
+import 'moment/locale/ko';
 import { View, Text, Button, StyleSheet } from "react-native";
 import { ScrollView, TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
-import moment from "moment";
-import 'moment/locale/ko';
 
 import { theme } from '../common/colors';
-// 작동하지만 저장된 책 데이터와 연결 안됨..
-import { addBook, addReport } from "../redux/bookSlice";
+import {  addReport } from "../redux/bookSlice";
 
 function CreateReport({navigation}) {
     const dispatch = useDispatch();
@@ -35,7 +34,7 @@ function CreateReport({navigation}) {
         };
         setReportContent('');
         dispatch(addReport(newReportData));
-        dispatch(addBook(newReportData));
+        // dispatch(addBook(newReportData));
     };
 
     return (
@@ -97,7 +96,7 @@ function CreateReport({navigation}) {
                         </View>
                         )
                     })
-                }
+            }
             
         </View>
     );

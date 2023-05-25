@@ -1,10 +1,10 @@
-import "react-native-gesture-handler";
-import { StyleSheet } from 'react-native';
-import { DrawerActions, NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import 'react-native-gesture-handler';
+import React from 'react';
 import { Provider } from 'react-redux';
+import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import store from './redux/store';
 
 // Import pages 
 import Home from './pages/Home';
@@ -12,35 +12,35 @@ import Search from './pages/Search';
 import MyLibrary from './pages/MyLibrary';
 import CreateReport from './pages/CreateReport';
 
+//
+import store from './redux/store';
 
-export default function App() {
-  const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
+const Stack1 = createStackNavigator();
+
+const Stack1Screens = () => {
+  return (
+    <Stack1.Navigator screenOptions={{ headerShown: false }}>
+      <Stack1.Screen name="MyLibrary" component={ MyLibrary }/>
+      <Stack1.Screen name="CreateReport" component={ CreateReport } />
+    </Stack1.Navigator>
+  );
+};
+
+
+const App = () => {
 
   return (
     <Provider store={ store }>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
-          <Stack.Group screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Home" component={ Home } />
-          </Stack.Group>
-          <Stack.Group screenOptions={{ headerBackTitleVisible: false }}>
-            <Stack.Screen name="Search" component={ Search } options={{ title: '' }} />
-          </Stack.Group>
-          <Stack.Group>
-            <Stack.Screen name="MyLibrary" component={ MyLibrary } options={{ title: '내 서재' }} />
-            <Stack.Screen name="CreateReport" component={ CreateReport } options={{ title: '',  headerShadowVisible: false, }}/>  
-          </Stack.Group>
-        </Stack.Navigator>
+        <Drawer.Navigator screenOptions={{ headerShadowVisible: false }}>
+          <Drawer.Screen name="Home" component={ Home } options={{ drawerLabel: '홈' }}  />
+          <Drawer.Screen name="Search" component={ Search } options={{ drawerLabel: '책 검색' }} />
+          <Drawer.Screen name="DrawerMyLibrary" component={ Stack1Screens } options={{ drawerLabel: '내 서재' }} />
+        </Drawer.Navigator>
       </NavigationContainer>
     </Provider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;

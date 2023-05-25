@@ -3,30 +3,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { View, Text, Button, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-import { getIsbn } from "../redux/bookReportSlice";
-import { addReport } from "../redux/bookSlice";
+import { setSelectedBook } from "../redux/bookSlice";
 
 function MyLibrary({navigation}) {
   const dispatch = useDispatch();
 
-  const [myLibraryData, setMyLibraryData] = useState(useSelector((state) => state.book.books));
-  console.log('myLibraryData:', myLibraryData);
-    
-  const onClickBook = (thisBookData) => {
-    dispatch(addReport(thisBookData));
-    dispatch(getIsbn(thisBookData));
+  const myLibraryBook= useSelector((state) => state.book.books);
+  console.log('myLibraryBook:', myLibraryBook);
+
+  const handleBookClick = (thisBook) => {
+    dispatch(setSelectedBook(thisBook));
     navigation.navigate('CreateReport');
   };
 
   return (
     <View style={ styles.container }>
       {
-        myLibraryData.map((thisBookData) => {
+        myLibraryBook.map((thisBookData) => {
           const datakey = thisBookData.isbn;
 
           return(
             <View key={ datakey } style={ styles.bookBox }>
-              <TouchableOpacity onPress={ () => onClickBook(thisBookData) }>
+              <TouchableOpacity onPress={ () => handleBookClick(thisBookData) }>
                 <Text>{ thisBookData.title }</Text>
                 { thisBookData.readingStatus === 'reading' ? <Text>읽는중</Text> : <Text>기타</Text> }
               </TouchableOpacity>
