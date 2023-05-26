@@ -8,6 +8,7 @@ import { setSelectedBook } from "../redux/bookSlice";
 function MyLibrary({navigation}) {
   const dispatch = useDispatch();
 
+  // 내 서재에 저장되어 있는 모든 책 가져오기
   const myLibraryBook= useSelector((state) => state.book.books);
   console.log('myLibraryBook:', myLibraryBook);
 

@@ -84,16 +84,21 @@ function Search({ navigation: { navigate } }) {
     setModalVisible(false);
   };
 
-  console.log('담겨있는 책 리스트', totalBookData);
+  console.log('저장한 책 리스트', totalBookData);
 
   return (
-    <View style={{ backgroundColor: '#fff', paddingHorizontal: 20 }}  >
+    <View style={{ backgroundColor: '#fff', paddingHorizontal: 20, height: '100%' }}>
+       {/* 타이틀 영역 */}
+      <View style={ styles.pageTitleArea }>
+        <Text style={ styles.pageTitle }>검색</Text>
+      </View>
+
       {/* 검색 영역 */}
       <View style={ styles.searchArea }>
         <TextInput 
           onChangeText={ onChangeText }
-          placeholder='도서명, 저자명으로 검색'
-          style={{ backgroundColor: 'lightgrey' , borderRadius: 5, color: 'grey', padding: 12, width: '80%' }}
+          placeholder='도서명, 저자명으로 검색해주세요.'
+          style={{  borderBottomWidth: '2px', borderColor: '#000', color: 'grey', padding: 12, width: '80%' }}
           value={ searcText }
         />
         <TouchableOpacity onPress={ getSearchBooksData }>
@@ -102,7 +107,7 @@ function Search({ navigation: { navigate } }) {
       </View>
 
       {/* 스크롤 영역 */}
-      <ScrollView style={{ height: '100%' }}>
+      <ScrollView style={ styles.scrollArea }>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }  }>
           { searchBookResults !== undefined ? searchBookResults.map((thisClickedBook) => {
             const datakey = thisClickedBook.isbn;
@@ -147,10 +152,25 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'grey',
   },
+  pageTitleArea: {
+    justifyContent: 'center',
+    backgroundColor: '#DA7B7B',
+    height: 60,
+  },
+  pageTitle: {
+    fontSize: 24,
+  },
   searchArea: {
-    alignItems: 'center',
+    backgroundColor: '#AF4545',
+    alignItems: 'flex-end',
     flexDirection: 'row',
+    height: 60,
     justifyContent: 'space-between',
+    marginBottom: 40,
+  },
+  scrollArea: {
+    backgroundColor: '#DA7B7B',
+    paddingBottom: 40,
   },
   modalView: {
     alignItems: 'center', 

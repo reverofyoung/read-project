@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import moment from "moment";
 import 'moment/locale/ko';
 import { View, Text, Button, StyleSheet } from "react-native";
@@ -12,8 +12,6 @@ function CreateReport({ navigation }) {
     const dispatch = useDispatch();
     const preSelectedBook = useSelector((state) => state.book.selectedBook);
     const newBookArray = useSelector((state) => state.book.books);
-    console.log('preSelectedBook', preSelectedBook.content);
-    console.log('newBookArray', newBookArray);
     
     const [reportContent, setReportContent] = useState('');
     const [selectedBook, setSelectedBook] = useState('');
@@ -21,6 +19,11 @@ function CreateReport({ navigation }) {
     
     const date = new Date();
     const currentDate = moment(date).format('YYYY-MM-DD HH:mm');
+
+    useEffect(() => {
+        // newBookArray의 값이 변경될 때 마다 실행
+        newBookData();
+    }, [newBookArray]);
 
     const toggleButton = () => {
         setContentVisible(true);
@@ -31,20 +34,27 @@ function CreateReport({ navigation }) {
     };
 
     const saveReport = () => {
-        const newReportData = {
-            content: reportContent,
-            date: currentDate,
-        };
-        console.log('newReportData', newReportData);
-        setReportContent('');
-        dispatch(addReport({ isbn: preSelectedBook.isbn, newReportData }));
+        if(reportContent !== ''){
+            const newReportData = {
+                content: reportContent,
+                date: currentDate,
+            };
 
-        const findBook = newBookArray.find((thisBook) => thisBook.isbn === preSelectedBook.isbn);
-        console.log('findBook',findBook);
-        setSelectedBook(findBook);
+            setReportContent('');
+            dispatch(addReport({ isbn: preSelectedBook.isbn, newReportData }));
+    
+        }else{
+            alert('코멘트를 작성해주세요!');
+        }
+
+        
     };
 
-    console.log('selectedBook', selectedBook);
+    
+    const newBookData = () => {
+        const findBook = newBookArray.find((thisBook) => thisBook.isbn === preSelectedBook.isbn);
+        setSelectedBook(findBook);
+    };
 
     return (
         <View style={ styles.container }>
@@ -58,27 +68,31 @@ function CreateReport({ navigation }) {
                         읽기 전 코멘트
                     </Text>
                 </TouchableOpacity>
+
                 {
                     selectedBook.content !== undefined ? 
-                    <View>
+                    <View style={ styles.mainContent }>
                         <Text>{ selectedBook.date }</Text>
                         <Text>{ selectedBook.content }</Text>
                     </View> :
-                    <TextInput
-                        multiline={ true }
-                        onChangeText={ onChangeText }
-                        placeholder='코멘트가 비어있어요'
-                        style={ styles.inputArea }
-                        textAlignVertical="top"
-                        value={ reportContent }
-                    />
+                    <View>
+                        <TextInput
+                            multiline={ true }
+                            onChangeText={ onChangeText }
+                            placeholder='코멘트가 비어있어요'
+                            style={ styles.inputArea }
+                            textAlignVertical="top"
+                            value={ reportContent }
+                        />
+                    </View>
                 }
+                <View style={ styles.saveButton }>
+                    <TouchableOpacity>
+                        <Button title="코멘트 등록하기" color={ theme.mainRed } onPress={ saveReport } />
+                    </TouchableOpacity>
+                </View>
             </View>  
-            <View style={ styles.buttonArea }>
-                <TouchableOpacity>
-                    <Button title="코멘트 등록하기" color={ theme.mainRed } onPress={ saveReport } />
-                </TouchableOpacity>
-            </View>
+          
         </View>
     );
 }
@@ -99,6 +113,9 @@ const styles = StyleSheet.create({
     flex: 7,
     backgroundColor: '#AF4545'
   },
+  mainContent: {
+    backgroundColor: 'black',
+  },
   inputArea: {
     backgroundColor: '#DA7B7B',
     borderWidth: 1,
@@ -114,8 +131,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 40,
   },
-  buttonArea: {
-    flex: 1,
+  saveButton: {
+    height: 40,
     justifyContent: 'flex-end',
   }
 });
