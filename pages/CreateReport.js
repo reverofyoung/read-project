@@ -6,21 +6,25 @@ import { ScrollView, TextInput, TouchableOpacity } from "react-native-gesture-ha
 import { useDispatch, useSelector } from "react-redux";
 
 import { theme } from '../common/colors';
-import {  addReport } from "../redux/bookSlice";
+import { addReport } from "../redux/bookSlice";
 
-function CreateReport({navigation}) {
+function CreateReport({ navigation }) {
     const dispatch = useDispatch();
-
-    const [totalBook, setTotalBook] = useState(useSelector((state) => state.book.books));
-    const [reportData, setReportData] = useState(useSelector((state) => state.bookReport.data));
+    const preSelectedBook = useSelector((state) => state.book.selectedBook);
+    const newBookArray = useSelector((state) => state.book.books);
+    console.log('preSelectedBook', preSelectedBook.content);
+    console.log('newBookArray', newBookArray);
+    
     const [reportContent, setReportContent] = useState('');
-
+    const [selectedBook, setSelectedBook] = useState('');
+    const [contentVisible, setContentVisible] = useState(false);
+    
     const date = new Date();
     const currentDate = moment(date).format('YYYY-MM-DD HH:mm');
 
-    console.log('저장되어 있는 모든 책 ', totalBook );
-
-    const currentBook = totalBook.filter((thisData) => reportData.isbn === thisData.isbn);
+    const toggleButton = () => {
+        setContentVisible(true);
+    }; 
 
     const onChangeText = (value) => {
         setReportContent(value);
@@ -28,76 +32,53 @@ function CreateReport({navigation}) {
 
     const saveReport = () => {
         const newReportData = {
-            ...reportData,
             content: reportContent,
-            date: currentDate
+            date: currentDate,
         };
+        console.log('newReportData', newReportData);
         setReportContent('');
-        dispatch(addReport(newReportData));
-        // dispatch(addBook(newReportData));
+        dispatch(addReport({ isbn: preSelectedBook.isbn, newReportData }));
+
+        const findBook = newBookArray.find((thisBook) => thisBook.isbn === preSelectedBook.isbn);
+        console.log('findBook',findBook);
+        setSelectedBook(findBook);
     };
+
+    console.log('selectedBook', selectedBook);
 
     return (
         <View style={ styles.container }>
-            {
-                currentBook.map((thisBook) => {
-                    const datakey = thisBook.isbn;
-                    
-                    return(
-                        <View key={ datakey }>
-                            {/* 책 타이틀, 독서 상태 */}
-                            <View style={ styles.titleArea }>
-                                <View style={{ maxWidth: '73%' }}>
-                                    <Text numberOfLines={ 1 } style={{ fontWeight: '600' }}>{ thisBook.title }</Text>
-                                </View>
-                                <View style={{ minWidth: '20%' }}>
-                                    { thisBook.readingStatus === 'reading' ? <Text>읽는중</Text> : <Text>기타</Text> }
-                                </View>
-                            </View>
-
-                            {/* 코멘트 영역 */}
-                            <View style={ styles.contentArea }>
-                                <View>
-                                    <Text>
-                                        읽기 전 코멘트
-                                    </Text>
-                                </View>
-
-                                {
-                                    thisBook.content ===  undefined || thisBook.content ===  '' ?
-                                    <View>
-                                        <TextInput
-                                            multiline={ true }
-                                            onChangeText={ onChangeText }
-                                            placeholder='코멘트를 작성해주삼 '
-                                            style={ styles.inputArea }
-                                            textAlignVertical="top"
-                                            value={ reportContent }
-                                        />
-                                    </View> : 
-                                    <ScrollView 
-                                        bounces={ true }
-                                        keyboardDismissMode={ "on-drag" }
-                                        style={ styles.scrollArea }
-                                    >
-                                        <Text>{ thisBook.date } </Text>
-                                        <Text>{ thisBook.content } </Text>
-                                    </ScrollView>
-                                }
-                        
-                            </View>
-
-                            {/* '코멘트 추가' 버튼 영역 */}
-                            <View style={ styles.buttonArea }>
-                                <TouchableOpacity>
-                                    <Button title="코멘트 추가" color={ theme.mainRed } onPress={ saveReport } />
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-                        )
-                    })
-            }
-            
+            <View style={ styles.titleArea }>
+                <Text>{ preSelectedBook.title }</Text>
+                <Text>{ preSelectedBook.readingStatus ==='reading' ? '읽는중' : '쓰는중' }</Text>
+            </View>
+            <View style={ styles.contentArea }>
+                <TouchableOpacity onPress={ toggleButton }>
+                    <Text>
+                        읽기 전 코멘트
+                    </Text>
+                </TouchableOpacity>
+                {
+                    selectedBook.content !== undefined ? 
+                    <View>
+                        <Text>{ selectedBook.date }</Text>
+                        <Text>{ selectedBook.content }</Text>
+                    </View> :
+                    <TextInput
+                        multiline={ true }
+                        onChangeText={ onChangeText }
+                        placeholder='코멘트가 비어있어요'
+                        style={ styles.inputArea }
+                        textAlignVertical="top"
+                        value={ reportContent }
+                    />
+                }
+            </View>  
+            <View style={ styles.buttonArea }>
+                <TouchableOpacity>
+                    <Button title="코멘트 등록하기" color={ theme.mainRed } onPress={ saveReport } />
+                </TouchableOpacity>
+            </View>
         </View>
     );
 }

@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
 
 export const bookSlice = createSlice({
     name: "book", // 리듀서 이름
@@ -29,10 +29,14 @@ export const bookSlice = createSlice({
         },
 
         addReport: (state, action) => {
-            const { isbn, content }= action.payload;
-            console.log('isbn :', isbn, 'content:', content);
-            const book = state.books.find((book) => book.isbn === isbn)
-            console.log('book: ', book);
+            const { isbn, newReportData }= action.payload;
+            console.log('isbn :', isbn, 'newReportData:', newReportData);
+            const book = state.books.find((thisBook) => thisBook.isbn === isbn);
+            console.log('book:', current(book));
+            if(book) {
+                book.content = newReportData.content;
+                book.date = newReportData.date;
+            }
         }
     },
 });
