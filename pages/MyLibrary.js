@@ -12,6 +12,7 @@ function MyLibrary({navigation}) {
   const myLibraryBooks= useSelector((state) => state.book.books);
   console.log('myLibraryBooks:', myLibraryBooks);
 
+  // 책 클릭 시, 독후감 작성 화면으로 이동
   const handleBookClick = (thisBook) => {
     dispatch(setSelectedBook(thisBook));
     navigation.navigate('CreateReport');

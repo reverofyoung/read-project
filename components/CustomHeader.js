@@ -6,6 +6,9 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 const CustomHeader = ({ navigation }) => {
     return (
       <View style={ styles.header }>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+          <Text>로고</Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
           <Text>✚</Text>
         </TouchableOpacity>
@@ -16,11 +19,11 @@ const CustomHeader = ({ navigation }) => {
 const styles = StyleSheet.create({
     header: {
         alignItems: 'center', 
-        backgroundColor: '#fff',
+        backgroundColor: 'grey',
         flexDirection: 'row', 
         height: 50, 
-        justifyContent: 'flex-end', 
-        paddingRight: 20,
+        justifyContent: 'space-between', 
+        paddingHorizontal: 20,
     }
 });
 

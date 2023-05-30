@@ -1,9 +1,10 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { Button, SafeAreaView } from 'react-native-web';
 import { createStackNavigator } from '@react-navigation/stack';
 
 
@@ -15,6 +16,7 @@ import CreateReport from './pages/CreateReport';
 
 //
 import store from './redux/store';
+import theme from './common/colors'
 import CustomHeader from './components/CustomHeader';
 
 const Drawer = createDrawerNavigator();
@@ -29,16 +31,31 @@ const MyLibraryStack = () => {
   );
 };
 
-// const CustomHeader = ({ navigation }) => {
-//   return (
-//     <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', height: 60, paddingRight: 20 }}>
-//       <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-//         <Text>✚</Text>
-//       </TouchableOpacity>
-//     </View>
-//   );
-// };
+const CustomButtonList = () => {
+  return(
+    <SafeAreaView>
+      {/* 드로어 메뉴 헤더  */}
+      <View style={ styles.drawerContentHeader }>
+        <TouchableOpacity onPress={ () => navigation.closeDrawer() }>
+          <Text>X</Text>
+        </TouchableOpacity>
+      </View>
 
+      {/* 드로어 메뉴 목록 */}
+      <View style={ styles.drawerContentBox }>
+        <TouchableOpacity onPress={ () => navigation.navigate('Home') } style={ styles.customButton }>
+          <Text style={{ color: theme.black, fontSize: 30 }}>홈</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={ () => navigation.navigate('Search') } style={ styles.customButton }>
+          <Text style={{ color: theme.black, fontSize: 30 }}>책 검색</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={ () => navigation.navigate('DrawerMyLibrary') } style={ styles.customButton }>
+          <Text style={{ color: theme.black, fontSize: 30 }}>내 서재</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
+  )
+};
 
 const App = () => {
 
@@ -46,20 +63,47 @@ const App = () => {
     <Provider store={ store }>
       <NavigationContainer>
         <Drawer.Navigator 
+          drawerContent={({ navigation }) => (
+            <SafeAreaView>
+              {/* 드로어 메뉴 헤더  */}
+              <View style={ styles.drawerContentHeader }>
+                <TouchableOpacity onPress={ () => navigation.closeDrawer() }>
+                  <Text>X</Text>
+                </TouchableOpacity>
+              </View>
+
+              {/* 드로어 메뉴 목록 */}
+              <View style={ styles.drawerContentBox }>
+                <TouchableOpacity onPress={ () => navigation.navigate('Home') } style={ styles.customButton }>
+                  <Text style={{ color: theme.black, fontSize: 30 }}>홈</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={ () => navigation.navigate('Search') } style={ styles.customButton }>
+                  <Text style={{ color: theme.black, fontSize: 30 }}>책 검색</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={ () => navigation.navigate('DrawerMyLibrary') } style={ styles.customButton }>
+                  <Text style={{ color: theme.black, fontSize: 30 }}>내 서재</Text>
+                </TouchableOpacity>
+              </View>
+            </SafeAreaView>
+          )}
           screenOptions={{ 
             drawerStyle: { 
-              backgroundColor: '#fff',
+              backgroundColor: theme.white,
               width: '100%', 
             },
             drawerContentOptions: {
               drawerPosition: 'right',
             },
+            drawerActiveBackgroundColor: theme.white,
+            drawerActiveTintColor: theme.black,
+            drawerInactiveTintColor: theme.black,
+            drawerLabelStyle: { fontSize: 30 },
             drawerPosition: 'right',
             header: (props) => <CustomHeader { ...props } />,
             headerShadowVisible: false,
           }}
         >
-          <Drawer.Screen name="Home" component={ Home } options={{ drawerLabel: '홈', title: '' }}  />
+          <Drawer.Screen name="Home" component={ Home } options={{ drawerLabel: '홈', title: ''  }}  />
           <Drawer.Screen name="Search" component={ Search } options={{ drawerLabel: '책 검색', title: '' }} />
           <Drawer.Screen name="DrawerMyLibrary" component={ MyLibraryStack } options={{ drawerLabel: '내 서재', title: '' }} />
         </Drawer.Navigator>
@@ -68,4 +112,21 @@ const App = () => {
   );
 }
 
+const styles = StyleSheet.create({
+  drawerContentHeader: {
+    alignItems: 'flex-start',
+    height: 50,
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+
+  },
+  drawerContentBox: {
+    padding: 20,
+  },
+  customButton: {
+    borderBottomWidth: 1,
+    borderBottomColor: theme.black,
+    paddingVertical: 10,
+  }
+});
 export default App;

@@ -30,7 +30,6 @@ export const bookSlice = createSlice({
 
         addReport: (state, action) => {
             const { isbn, newReportData }= action.payload;
-            // console.log('isbn :', isbn, 'newReportData:', newReportData);
             const book = state.books.find((thisBook) => thisBook.isbn === isbn);
             // console.log('book:', current(book));
             if(book) {
