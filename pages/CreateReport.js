@@ -39,6 +39,7 @@ function CreateReport({ navigation }) {
                 content: reportContent,
                 date: currentDate,
             };
+            console.log('newReportData', newReportData);
 
             setReportContent('');
             dispatch(addReport({ isbn: preSelectedBook.isbn, newReportData }));
@@ -46,10 +47,7 @@ function CreateReport({ navigation }) {
         }else{
             alert('코멘트를 작성해주세요!');
         }
-
-        
     };
-
     
     const newBookData = () => {
         const findBook = newBookArray.find((thisBook) => thisBook.isbn === preSelectedBook.isbn);
@@ -71,28 +69,31 @@ function CreateReport({ navigation }) {
 
                 {
                     selectedBook.content !== undefined ? 
+                    // 저장된 content가 있을 때
                     <View style={ styles.mainContent }>
                         <Text>{ selectedBook.date }</Text>
                         <Text>{ selectedBook.content }</Text>
                     </View> :
+                    // 저장된 content가 없을 때
                     <View>
-                        <TextInput
-                            multiline={ true }
-                            onChangeText={ onChangeText }
-                            placeholder='코멘트가 비어있어요'
-                            style={ styles.inputArea }
-                            textAlignVertical="top"
-                            value={ reportContent }
-                        />
+                        <View>
+                            <TextInput
+                                multiline={ true }
+                                onChangeText={ onChangeText }
+                                placeholder='코멘트가 비어있어요'
+                                style={ styles.inputArea }
+                                textAlignVertical="top"
+                                value={ reportContent }
+                            />
+                        </View>
+                        <View style={ styles.saveButton }>
+                            <TouchableOpacity>
+                                <Button title="코멘트 등록하기" color={ theme.mainRed } onPress={ saveReport } />
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 }
-                <View style={ styles.saveButton }>
-                    <TouchableOpacity>
-                        <Button title="코멘트 등록하기" color={ theme.mainRed } onPress={ saveReport } />
-                    </TouchableOpacity>
-                </View>
             </View>  
-          
         </View>
     );
 }
@@ -114,7 +115,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#AF4545'
   },
   mainContent: {
-    backgroundColor: 'black',
+    // backgroundColor: 'black',
   },
   inputArea: {
     backgroundColor: '#DA7B7B',

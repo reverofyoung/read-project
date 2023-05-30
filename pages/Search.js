@@ -87,8 +87,8 @@ function Search({ navigation: { navigate } }) {
   console.log('저장한 책 리스트', totalBookData);
 
   return (
-    <View style={{ backgroundColor: '#fff', paddingHorizontal: 20, height: '100%' }}>
-       {/* 타이틀 영역 */}
+    <View style={ styles.container }>
+      {/* 타이틀 영역 */}
       <View style={ styles.pageTitleArea }>
         <Text style={ styles.pageTitle }>검색</Text>
       </View>
@@ -149,8 +149,10 @@ function Search({ navigation: { navigate } }) {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#fff', 
     flex: 1,
-    backgroundColor: 'grey',
+    height: '100%' ,
+    paddingHorizontal: 20, 
   },
   pageTitleArea: {
     justifyContent: 'center',

@@ -1,5 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
+import { View, Text, TouchableOpacity } from "react-native";
 import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -14,11 +15,12 @@ import CreateReport from './pages/CreateReport';
 
 //
 import store from './redux/store';
+import CustomHeader from './components/CustomHeader';
 
 const Drawer = createDrawerNavigator();
 const Stack1 = createStackNavigator();
 
-const Stack1Screens = () => {
+const MyLibraryStack = () => {
   return (
     <Stack1.Navigator screenOptions={{ headerShown: false }}>
       <Stack1.Screen name="MyLibrary" component={ MyLibrary }/>
@@ -27,16 +29,39 @@ const Stack1Screens = () => {
   );
 };
 
+// const CustomHeader = ({ navigation }) => {
+//   return (
+//     <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', height: 60, paddingRight: 20 }}>
+//       <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+//         <Text>✚</Text>
+//       </TouchableOpacity>
+//     </View>
+//   );
+// };
+
 
 const App = () => {
 
   return (
     <Provider store={ store }>
       <NavigationContainer>
-        <Drawer.Navigator screenOptions={{ headerShadowVisible: false }}>
-          <Drawer.Screen name="Home" component={ Home } options={{ drawerLabel: '홈' }}  />
-          <Drawer.Screen name="Search" component={ Search } options={{ drawerLabel: '책 검색' }} />
-          <Drawer.Screen name="DrawerMyLibrary" component={ Stack1Screens } options={{ drawerLabel: '내 서재' }} />
+        <Drawer.Navigator 
+          screenOptions={{ 
+            drawerStyle: { 
+              backgroundColor: '#fff',
+              width: '100%', 
+            },
+            drawerContentOptions: {
+              drawerPosition: 'right',
+            },
+            drawerPosition: 'right',
+            header: (props) => <CustomHeader { ...props } />,
+            headerShadowVisible: false,
+          }}
+        >
+          <Drawer.Screen name="Home" component={ Home } options={{ drawerLabel: '홈', title: '' }}  />
+          <Drawer.Screen name="Search" component={ Search } options={{ drawerLabel: '책 검색', title: '' }} />
+          <Drawer.Screen name="DrawerMyLibrary" component={ MyLibraryStack } options={{ drawerLabel: '내 서재', title: '' }} />
         </Drawer.Navigator>
       </NavigationContainer>
     </Provider>
