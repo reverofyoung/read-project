@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import baseStyle from "../common/baseStyle";
 
 function Home({navigation}) {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -8,33 +9,12 @@ function Home({navigation}) {
   const onClickMenuBtn = () => {
     !menuVisible ? setMenuVisible(true) : setMenuVisible(false);
   };
+  
+  console.log('baseStyle', baseStyle);
 
   return (
-    <View style={styles.container}>
+    <View style={[ baseStyle.pageLayout ]}>
       <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-
-        {/* 메뉴 버튼 0n/Off */}
-        {/* <TouchableOpacity onPress={ onClickMenuBtn }>
-          { 
-            !menuVisible ? <Text style={{ padding: 5, borderRadius: 20 }}>⭕️</Text> : 
-            <Text style={{ padding: 5, borderRadius: 20 }}>❌</Text> 
-          }
-        </TouchableOpacity> */}
-
-        {/* <View style={{ flexDirection: 'row', display: !menuVisible ? 'none' : 'flex'}}>
-          <Button 
-            title={ '책검색' } 
-            onPress={ () => navigation.navigate('Search') }
-          />
-          <Button 
-            title={ '내서재' }
-            onPress={ () => navigation.navigate('MyLibrary') }
-          />
-           <Button 
-            title={ '글쓰기' }
-            onPress={ () => navigation.navigate('CreateReport') }
-          />
-        </View> */}
 
       </View>
     </View>

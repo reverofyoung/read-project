@@ -5,8 +5,8 @@ import { View, Text, Button, StyleSheet } from "react-native";
 import { ScrollView, TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 
-import { theme } from '../common/colors';
 import { addReport } from "../redux/bookSlice";
+import theme from '../common/colors';
 
 function CreateReport({ navigation }) {
     const dispatch = useDispatch();
@@ -22,8 +22,8 @@ function CreateReport({ navigation }) {
 
     useEffect(() => {
         // newBookArray의 값이 변경될 때 마다 실행
-        newBookData();
-    }, [newBookArray]);
+        setNewBookData();
+    }, [ newBookArray ]);
 
     const toggleButton = () => {
         setContentVisible(true);
@@ -39,7 +39,7 @@ function CreateReport({ navigation }) {
                 content: reportContent,
                 date: currentDate,
             };
-            console.log('newReportData', newReportData);
+            console.log('저장된 코멘트', newReportData);
 
             setReportContent('');
             dispatch(addReport({ isbn: preSelectedBook.isbn, newReportData }));
@@ -49,13 +49,16 @@ function CreateReport({ navigation }) {
         }
     };
     
-    const newBookData = () => {
+    const setNewBookData = () => {
         const findBook = newBookArray.find((thisBook) => thisBook.isbn === preSelectedBook.isbn);
         setSelectedBook(findBook);
     };
 
     return (
         <View style={ styles.container }>
+            <TouchableOpacity onPress={ navigation.goBack }>
+                <Text> 뒤로 </Text>
+            </TouchableOpacity>
             <View style={ styles.titleArea }>
                 <Text>{ preSelectedBook.title }</Text>
                 <Text>{ preSelectedBook.readingStatus ==='reading' ? '읽는중' : '쓰는중' }</Text>
@@ -80,7 +83,7 @@ function CreateReport({ navigation }) {
                             <TextInput
                                 multiline={ true }
                                 onChangeText={ onChangeText }
-                                placeholder='코멘트가 비어있어요'
+                                placeholder='코멘트가 비어있어요.'
                                 style={ styles.inputArea }
                                 textAlignVertical="top"
                                 value={ reportContent }

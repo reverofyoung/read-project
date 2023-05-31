@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 
 import { useState } from 'react';
@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Button, Image, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { addBook, deleteBook } from '../redux/bookSlice';
+import baseStyle from "../common/baseStyle";
 
 function Search({ navigation: { navigate } }) {
   const dispatch = useDispatch();
@@ -18,7 +19,12 @@ function Search({ navigation: { navigate } }) {
   const [searchBookResults, setSearchBookResults] = useState();  
   const [clickedBookData, setClickedBookData] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
-  
+
+  useEffect(() => {
+    if(responseBooksData !== undefined) 
+      setSearchBookResults(responseBooksData);
+  }, [ responseBooksData ]);
+
   // 입력값 받아오기
   const onChangeText = (value) => {
     setSearcText(value);
@@ -29,7 +35,10 @@ function Search({ navigation: { navigate } }) {
     axios({
       method: "GET",
       url: "https://dapi.kakao.com/v3/search/book?target=title",
-      params: { query: searcText },
+      params: { 
+        query: searcText,
+        size: 50,
+      },
       headers:{
         Authorization: `KakaoAK ${SERACH_BOOK_API}`
       },
@@ -37,11 +46,7 @@ function Search({ navigation: { navigate } }) {
     .then(function (response) {
       // 검색된 도서 데이터 state에 담기
       const getResponseData = JSON.parse(response.request.response);
-      setResponseBooksData(getResponseData);
-
-      if(responseBooksData !== undefined) {
-        setSearchBookResults(responseBooksData.documents);
-      };
+      setResponseBooksData(getResponseData.documents);
     })
     .catch(function(error){
       console.log("error", error);
@@ -49,9 +54,7 @@ function Search({ navigation: { navigate } }) {
   };
 
   // 책 클릭 시 모달 열림
-  const onClickBook = (thisClickedBook) => {
-    // console.log('클릭한 책 : ', thisClickedBook);
-
+  const openModal = (thisClickedBook) => {
     setClickedBookData(thisClickedBook);
     setModalVisible(!modalVisible);
   };
@@ -67,11 +70,11 @@ function Search({ navigation: { navigate } }) {
       readingStatus : 'reading',
     };
 
-    const isbnArr = totalBookData.map((thisBook) => {
+    const preIsbnList = totalBookData.map((thisBook) => {
       return thisBook.isbn
     });
     
-    const isbnList = isbnArr.filter(thisResult => thisResult === clickedBookData.isbn);
+    const isbnList = preIsbnList.filter(thisResult => thisResult === clickedBookData.isbn);
 
     if(isbnList.length === 0) {
       // 책이 저장되어 있지 않을 때
@@ -80,17 +83,14 @@ function Search({ navigation: { navigate } }) {
       // 책이 저장되어 있을 때
       dispatch(deleteBook(clickedBookData.isbn));
     }
-
     setModalVisible(false);
   };
 
-  console.log('저장한 책 리스트', totalBookData);
-
   return (
-    <View style={ styles.container }>
+    <View style={[ baseStyle.pageLayout ]}>
       {/* 타이틀 영역 */}
-      <View style={ styles.pageTitleArea }>
-        <Text style={ styles.pageTitle }>검색</Text>
+      <View style={[ baseStyle.pageTitleArea ]}>
+        <Text style={[ baseStyle.pageTitle ]}>검색</Text>
       </View>
 
       {/* 검색 영역 */}
@@ -107,15 +107,15 @@ function Search({ navigation: { navigate } }) {
       </View>
 
       {/* 스크롤 영역 */}
-      <ScrollView style={ styles.scrollArea }>
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }  }>
+      <ScrollView style={{ paddingBottom: 40 }}>
+        <View style={[ baseStyle.scrollLayout ]}>
           { searchBookResults !== undefined ? searchBookResults.map((thisClickedBook) => {
             const datakey = thisClickedBook.isbn;
 
             return (
               <TouchableOpacity 
                 key={ datakey } 
-                onPress={ () => onClickBook(thisClickedBook) }
+                onPress={ () => openModal(thisClickedBook) }
               >
                 <View>
                   <Image style={{ height: 180, width: 120 }} source={{ url: thisClickedBook.thumbnail }} />
@@ -136,7 +136,7 @@ function Search({ navigation: { navigate } }) {
           <Text>
             <TouchableOpacity>
               {
-                <Button title={ '읽음' } onPress={ changeReadingStatus } />
+                <Button title={ '담기' } onPress={ changeReadingStatus } />
               }
             </TouchableOpacity>
             <Button title={'모달 닫기'} onPress={ () => setModalVisible(false) } />
@@ -145,34 +145,15 @@ function Search({ navigation: { navigate } }) {
       </Modal>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff', 
-    flex: 1,
-    height: '100%' ,
-    paddingHorizontal: 20, 
-  },
-  pageTitleArea: {
-    justifyContent: 'center',
-    backgroundColor: '#DA7B7B',
-    height: 60,
-  },
-  pageTitle: {
-    fontSize: 24,
-  },
   searchArea: {
-    backgroundColor: '#AF4545',
+    // backgroundColor: '#AF4545',
     alignItems: 'flex-end',
     flexDirection: 'row',
-    height: 60,
+    height: 50,
     justifyContent: 'space-between',
-    marginBottom: 40,
-  },
-  scrollArea: {
-    backgroundColor: '#DA7B7B',
-    paddingBottom: 40,
   },
   modalView: {
     alignItems: 'center', 

@@ -1,12 +1,13 @@
 import 'react-native-gesture-handler';
 import React from 'react';
+import Animated from 'react-native-reanimated';
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Provider } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { Button, SafeAreaView } from 'react-native-web';
+import { SafeAreaView } from 'react-native-web';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import { Ionicons } from '@expo/vector-icons';
 
 // Import pages 
 import Home from './pages/Home';
@@ -25,8 +26,8 @@ const Stack1 = createStackNavigator();
 const MyLibraryStack = () => {
   return (
     <Stack1.Navigator screenOptions={{ headerShown: false }}>
-      <Stack1.Screen name="MyLibrary" component={ MyLibrary }/>
-      <Stack1.Screen name="CreateReport" component={ CreateReport } />
+      <Stack1.Screen name="MyLibrary" component={ MyLibrary } options={{ unmountOnBlur: true }}/>
+      <Stack1.Screen name="CreateReport" component={ CreateReport } options={{ unmountOnBlur: true }} />
     </Stack1.Navigator>
   );
 };
@@ -58,6 +59,23 @@ const CustomButtonList = () => {
 };
 
 const App = () => {
+  const rotationValue = new Animated.Value(0);
+
+  const startRotation = () => {
+    Animated.loop(
+      Animated.timing(rotationValue, {
+        toValue: 1,
+        duration: 2000,
+        easing: Easing.linear,
+        useNativeDriver: true,
+      })
+    ).start();
+  };
+
+  const interpolatedRotation = rotationValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg'],
+  });
 
   return (
     <Provider store={ store }>
@@ -68,7 +86,14 @@ const App = () => {
               {/* 드로어 메뉴 헤더  */}
               <View style={ styles.drawerContentHeader }>
                 <TouchableOpacity onPress={ () => navigation.closeDrawer() }>
-                  <Text>X</Text>
+                <Ionicons name="close" size={ 24 } color="black" />
+                {/* <View style={styles.container}>
+                  <Animated.Image
+                    source={ require('./path/to/image.png') }
+                    style={ [styles.image, { transform: [{ rotate: interpolatedRotation }] }] }
+                    onLoad={ startRotation }
+                  />
+                </View> */}
                 </TouchableOpacity>
               </View>
 
@@ -103,8 +128,8 @@ const App = () => {
             headerShadowVisible: false,
           }}
         >
-          <Drawer.Screen name="Home" component={ Home } options={{ drawerLabel: '홈', title: ''  }}  />
-          <Drawer.Screen name="Search" component={ Search } options={{ drawerLabel: '책 검색', title: '' }} />
+          <Drawer.Screen name="Home" component={ Home } options={{ drawerLabel: '홈', title: '', unmountOnBlur: true }}  />
+          <Drawer.Screen name="Search" component={ Search } options={{ drawerLabel: '책 검색', title: '', unmountOnBlur: true }} />
           <Drawer.Screen name="DrawerMyLibrary" component={ MyLibraryStack } options={{ drawerLabel: '내 서재', title: '' }} />
         </Drawer.Navigator>
       </NavigationContainer>
@@ -127,6 +152,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: theme.black,
     paddingVertical: 10,
-  }
+  },
+  image: {
+    width: 20,
+    height: 20,
+  },
 });
 export default App;

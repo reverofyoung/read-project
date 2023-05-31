@@ -4,13 +4,14 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 
 import { setSelectedBook } from "../redux/bookSlice";
+import baseStyle from "../common/baseStyle";
 
 function MyLibrary({navigation}) {
   const dispatch = useDispatch();
 
   // 내 서재에 저장되어 있는 모든 책 가져오기
   const myLibraryBooks= useSelector((state) => state.book.books);
-  console.log('myLibraryBooks:', myLibraryBooks);
+  console.log('내 서재에 저장된 책:', myLibraryBooks);
 
   // 책 클릭 시, 독후감 작성 화면으로 이동
   const handleBookClick = (thisBook) => {
@@ -19,16 +20,20 @@ function MyLibrary({navigation}) {
   };
 
   return (
-    <View style={ styles.container }>
+    <View style={[ baseStyle.pageLayout ]}>
       {/* 타이틀 영역 */}
-      <View style={ styles.pageTitleArea }>
-        <Text style={ styles.pageTitle }>내 서재</Text>
+      <View style={[ baseStyle.pageTitleArea ]}>
+        <Text style={[ baseStyle.pageTitle ]}>내 서재</Text>
+
       </View>
 
       {/* 서재 영역 */}
       <ScrollView style={ styles.scrollArea }>
+        <TouchableOpacity onPress={ navigation.goBack }>
+          <Text> 뒤로 </Text>
+        </TouchableOpacity>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }  }>
-          { myLibraryBooks !== undefined ? myLibraryBooks.map((thisResult) => {
+          { myLibraryBooks.length !== 0 ? myLibraryBooks.map((thisResult) => {
             const datakey = thisResult.isbn;
 
             return (
@@ -42,7 +47,7 @@ function MyLibrary({navigation}) {
                 <Text style={{ width: 120 }}>{ thisResult.authors + ' / ' + thisResult.title }</Text>
               </TouchableOpacity>
             )
-          }) : null }
+          }) : <View style={ styles.libraryText }><Text>담겨 있는 책이 없어요</Text></View> }
         </View>
       </ScrollView>
     </View>
@@ -50,28 +55,17 @@ function MyLibrary({navigation}) {
 }
   
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#fff', 
-    flex: 1,
-    height: '100%' ,
-    paddingHorizontal: 20, 
-  },
-  pageTitleArea: {
-    justifyContent: 'center',
-    backgroundColor: '#DA7B7B',
-    height: 60,
-  },
-  pageTitle: {
-    fontSize: 24,
-  },
   bookBox: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   scrollArea: {
-    backgroundColor: '#DA7B7B',
+    // backgroundColor: '#DA7B7B',
     paddingBottom: 40,
   },
+  libraryText: {
+    paddingVertical: 30,
+  }
 });
 
 export default MyLibrary;
