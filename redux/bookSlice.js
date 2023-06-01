@@ -1,4 +1,4 @@
-import { createSlice, current } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 export const bookSlice = createSlice({
     name: "book", // 리듀서 이름
@@ -24,14 +24,12 @@ export const bookSlice = createSlice({
         },
 
         setSelectedBook: (state, action) => {
-            // console.log('클릭한 책: ', action.payload);
             state.selectedBook = action.payload;
         },
 
         addReport: (state, action) => {
             const { isbn, newReportData }= action.payload;
             const book = state.books.find((thisBook) => thisBook.isbn === isbn);
-            // console.log('book:', current(book));
             if(book) {
                 book.content = newReportData.content;
                 book.date = newReportData.date;
