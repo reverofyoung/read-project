@@ -32,50 +32,24 @@ const MyLibraryStack = () => {
   );
 };
 
-const CustomButtonList = () => {
-  return(
-    <SafeAreaView>
-      {/* 드로어 메뉴 헤더  */}
-      <View style={ styles.drawerContentHeader }>
-        <TouchableOpacity onPress={ () => navigation.closeDrawer() }>
-          <Text>X</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* 드로어 메뉴 목록 */}
-      <View style={ styles.drawerContentBox }>
-        <TouchableOpacity onPress={ () => navigation.navigate('Home') } style={ styles.customButton }>
-          <Text style={{ color: theme.black, fontSize: 30 }}>홈</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={ () => navigation.navigate('Search') } style={ styles.customButton }>
-          <Text style={{ color: theme.black, fontSize: 30 }}>책 검색</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={ () => navigation.navigate('DrawerMyLibrary') } style={ styles.customButton }>
-          <Text style={{ color: theme.black, fontSize: 30 }}>내 서재</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
-  )
-};
-
 const App = () => {
-  const rotationValue = new Animated.Value(0);
+  // const rotationValue = new Animated.Value(0);
 
-  const startRotation = () => {
-    Animated.loop(
-      Animated.timing(rotationValue, {
-        toValue: 1,
-        duration: 2000,
-        easing: Easing.linear,
-        useNativeDriver: true,
-      })
-    ).start();
-  };
+  // const startRotation = () => {
+  //   Animated.loop(
+  //     Animated.timing(rotationValue, {
+  //       toValue: 1,
+  //       duration: 2000,
+  //       easing: Easing.linear,
+  //       useNativeDriver: true,
+  //     })
+  //   ).start();
+  // };
 
-  const interpolatedRotation = rotationValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
-  });
+  // const interpolatedRotation = rotationValue.interpolate({
+  //   inputRange: [0, 1],
+  //   outputRange: ['0deg', '360deg'],
+  // });
 
   return (
     <Provider store={ store }>
@@ -86,7 +60,7 @@ const App = () => {
               {/* 드로어 메뉴 헤더  */}
               <View style={ styles.drawerContentHeader }>
                 <TouchableOpacity onPress={ () => navigation.closeDrawer() }>
-                <Ionicons name="close" size={ 24 } color="black" />
+                <Ionicons name="close" size={ 22 } color="black" />
                 {/* <View style={styles.container}>
                   <Animated.Image
                     source={ require('./path/to/image.png') }

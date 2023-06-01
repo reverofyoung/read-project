@@ -8,7 +8,7 @@ const baseStyle = StyleSheet.create({
         paddingHorizontal: 20, 
     },
     pageTitleArea: {
-        backgroundColor: '#DA7B7B',
+        // backgroundColor: '#DA7B7B',
         justifyContent: 'center',
         height: 60,
     },

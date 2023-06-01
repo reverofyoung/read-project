@@ -4,9 +4,11 @@ import axios from "axios";
 import { useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Image, Modal, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 import { addBook, deleteBook } from '../redux/bookSlice';
 import baseStyle from "../common/baseStyle";
+import theme from "../common/colors";
 
 function Search({ navigation: { navigate } }) {
   const dispatch = useDispatch();
@@ -18,12 +20,15 @@ function Search({ navigation: { navigate } }) {
   const [responseBooksData, setResponseBooksData] = useState();
   const [searchBookResults, setSearchBookResults] = useState();  
   const [clickedBookData, setClickedBookData] = useState({});
+  const [checkStatus, setCheckStatus] = useState();
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     if(responseBooksData !== undefined) 
       setSearchBookResults(responseBooksData);
   }, [ responseBooksData ]);
+
+  console.log('현재 담긴 책:', totalBookData);
 
   // 입력값 받아오기
   const onChangeText = (value) => {
@@ -55,6 +60,19 @@ function Search({ navigation: { navigate } }) {
 
   // 책 클릭 시 모달 열림
   const openModal = (thisClickedBook) => {
+    console.log('클릭한 책', thisClickedBook);
+
+    const isbnList = totalBookData.map((thisBook) => {
+      return thisBook.isbn
+    });
+    const checkIsbn = isbnList.find(thisResult => thisResult === thisClickedBook.isbn);
+
+    if(checkIsbn === undefined) {
+      setCheckStatus(false);
+    } else { 
+      setCheckStatus(true);
+    }
+
     setClickedBookData(thisClickedBook);
     setModalVisible(!modalVisible);
   };
@@ -70,21 +88,22 @@ function Search({ navigation: { navigate } }) {
       readingStatus : 'reading',
     };
 
-    const preIsbnList = totalBookData.map((thisBook) => {
+
+    const isbnList = totalBookData.map((thisBook) => {
       return thisBook.isbn
     });
     
-    const isbnList = preIsbnList.filter(thisResult => thisResult === clickedBookData.isbn);
+    const findIsbn = isbnList.find(thisResult => thisResult === clickedBookData.isbn);
 
-    if(isbnList.length === 0) {
-      // 책이 저장되어 있지 않을 때
+    if(findIsbn === undefined) { // 클릭한 책이 담겨 있지 않을 때, 새로 저장한다.
       dispatch(addBook(newBookData));
-    } else {
-      // 책이 저장되어 있을 때
+    } else { // 클릭한 책이 담겨 있을 때, 저장되어 있는 책을 삭제한다.
       dispatch(deleteBook(clickedBookData.isbn));
     }
-    setModalVisible(false);
+    setModalVisible(!modalVisible);
   };
+
+
 
   return (
     <View style={[ baseStyle.pageLayout ]}>
@@ -98,7 +117,7 @@ function Search({ navigation: { navigate } }) {
         <TextInput 
           onChangeText={ onChangeText }
           placeholder='도서명, 저자명으로 검색해주세요.'
-          style={{  borderBottomWidth: '2px', borderColor: '#000', color: 'grey', padding: 12, width: '80%' }}
+          style={ styles.inputStyle }
           value={ searcText }
         />
         <TouchableOpacity onPress={ getSearchBooksData }>
@@ -133,14 +152,18 @@ function Search({ navigation: { navigate } }) {
         visible={ modalVisible }
       >
         <View style={ styles.modalView }>
-          <Text>
-            <TouchableOpacity>
-              {
-                <Button title={ '담기' } onPress={ changeReadingStatus } />
-              }
+          <View style={{ alignItems: 'flex-end', paddingBottom: 30 }}>
+            <TouchableOpacity onPress={ () => setModalVisible(false) }>
+              <Ionicons name="close" size={ 23 } color="black" />
             </TouchableOpacity>
-            <Button title={'모달 닫기'} onPress={ () => setModalVisible(false) } />
-          </Text>
+          </View>
+          <View>
+            <TouchableOpacity onPress={ changeReadingStatus } style={ styles.modalButton }>
+              <Text style={{ color: theme.white, fontWeight: 'bold' }}>
+                { checkStatus === false ? '내 서재에 담기' : '내 서재에서 지우기'}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
     </View>
@@ -155,13 +178,28 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: 'space-between',
   },
+  inputStyle: {
+    borderBottomWidth: '2px', 
+    borderColor: theme.black, 
+    color: theme.black, 
+    padding: 12, 
+    width: '80%',
+  },
   modalView: {
-    alignItems: 'center', 
-    backgroundColor: 'grey', 
-    justifyContent: 'center', 
+    backgroundColor: '#D2D2D2', 
     marginHorizontal: 30, 
     marginVertical: 200, 
-    padding: 40,
+    // paddingHorizontal: 40,
+    // paddingVertical: 60,
+  },
+  modalLayout: {
+
+  },
+  modalButton: {
+    alignItems: 'center', 
+    backgroundColor: theme.mainRed, 
+    justifyContent: 'center',
+    padding: 10, 
   }
 });
 

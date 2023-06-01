@@ -4,13 +4,6 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import baseStyle from "../common/baseStyle";
 
 function Home({navigation}) {
-  const [menuVisible, setMenuVisible] = useState(false);
-
-  const onClickMenuBtn = () => {
-    !menuVisible ? setMenuVisible(true) : setMenuVisible(false);
-  };
-  
-  console.log('baseStyle', baseStyle);
 
   return (
     <View style={[ baseStyle.pageLayout ]}>
