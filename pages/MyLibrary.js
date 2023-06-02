@@ -24,14 +24,10 @@ function MyLibrary({navigation}) {
       {/* 타이틀 영역 */}
       <View style={[ baseStyle.pageTitleArea ]}>
         <Text style={[ baseStyle.pageTitle ]}>내 서재</Text>
-
       </View>
 
       {/* 서재 영역 */}
       <ScrollView style={ styles.scrollArea }>
-        <TouchableOpacity onPress={ navigation.goBack }>
-          <Text> 뒤로 </Text>
-        </TouchableOpacity>
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }  }>
           { myLibraryBooks.length !== 0 ? myLibraryBooks.map((thisResult) => {
             const datakey = thisResult.isbn;
@@ -44,7 +40,7 @@ function MyLibrary({navigation}) {
                 <View>
                   <Image style={{ height: 180, width: 120 }} source={{ url: thisResult.thumbnail }} />
                 </View>
-                <Text style={{ width: 120 }}>{ thisResult.authors + ' / ' + thisResult.title }</Text>
+                <Text style={{ width: 120 }}>{ thisResult.authors + ', ' + thisResult.title }</Text>
               </TouchableOpacity>
             )
           }) : <View style={ styles.libraryText }><Text>담겨 있는 책이 없어요</Text></View> }

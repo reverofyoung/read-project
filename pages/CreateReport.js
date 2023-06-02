@@ -57,9 +57,6 @@ function CreateReport({ navigation }) {
 
     return (
         <View style={ styles.container }>
-            <TouchableOpacity onPress={ navigation.goBack }>
-                <Text> 뒤로 </Text>
-            </TouchableOpacity>
             <View style={ styles.titleArea }>
                 <Text>{ preSelectedBook.title }</Text>
                 <Text>{ preSelectedBook.readingStatus === 'reading' ? '읽는중' : '쓰는중' }</Text>
@@ -68,10 +65,10 @@ function CreateReport({ navigation }) {
                 <View style={ styles.contentTitleArea }>
                     <Text style={ styles.contentTitle }>읽기 전 코멘트</Text>
                     <TouchableOpacity onPress={ toggleButton }>
-                        { 
-                        contentVisible === false ? 
-                        <Ionicons name="chevron-down" size={ 22 } color="black" /> :
-                        <Ionicons name="chevron-up" size={ 22 } color="black" /> 
+                        {   
+                            contentVisible === false ? 
+                            <Ionicons name="chevron-down" size={ 22 } color="black" /> :
+                            <Ionicons name="chevron-up" size={ 22 } color="black" /> 
                         }
                     </TouchableOpacity>
                 </View>
@@ -81,9 +78,9 @@ function CreateReport({ navigation }) {
                     <Text style={ styles.contentTitle }>읽는 중 코멘트</Text>
                     <TouchableOpacity onPress={ toggleButton }>
                         { 
-                        contentVisible === false ? 
-                        <Ionicons name="chevron-down" size={ 22 } color="black" /> :
-                        <Ionicons name="chevron-up" size={ 22 } color="black" /> 
+                            contentVisible === false ? 
+                            <Ionicons name="chevron-down" size={ 22 } color="black" /> :
+                            <Ionicons name="chevron-up" size={ 22 } color="black" /> 
                         }
                     </TouchableOpacity>
                 </View>

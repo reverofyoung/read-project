@@ -33,23 +33,6 @@ const MyLibraryStack = () => {
 };
 
 const App = () => {
-  // const rotationValue = new Animated.Value(0);
-
-  // const startRotation = () => {
-  //   Animated.loop(
-  //     Animated.timing(rotationValue, {
-  //       toValue: 1,
-  //       duration: 2000,
-  //       easing: Easing.linear,
-  //       useNativeDriver: true,
-  //     })
-  //   ).start();
-  // };
-
-  // const interpolatedRotation = rotationValue.interpolate({
-  //   inputRange: [0, 1],
-  //   outputRange: ['0deg', '360deg'],
-  // });
 
   return (
     <Provider store={ store }>
@@ -60,14 +43,7 @@ const App = () => {
               {/* 드로어 메뉴 헤더  */}
               <View style={ styles.drawerContentHeader }>
                 <TouchableOpacity onPress={ () => navigation.closeDrawer() }>
-                <Ionicons name="close" size={ 22 } color="black" />
-                {/* <View style={styles.container}>
-                  <Animated.Image
-                    source={ require('./path/to/image.png') }
-                    style={ [styles.image, { transform: [{ rotate: interpolatedRotation }] }] }
-                    onLoad={ startRotation }
-                  />
-                </View> */}
+                  <Ionicons name="close" size={ 22 } color="black" />
                 </TouchableOpacity>
               </View>
 
@@ -102,8 +78,11 @@ const App = () => {
             headerShadowVisible: false,
           }}
         >
-          <Drawer.Screen name="Home" component={ Home } options={{ drawerLabel: '홈', title: '', unmountOnBlur: true }}  />
-          <Drawer.Screen name="Search" component={ Search } options={{ drawerLabel: '책 검색', title: '', unmountOnBlur: true }} />
+          <Drawer.Screen name="Home" component={ Home } options={{ drawerLabel: '홈', title: '', unmountOnBlur: true,
+          headerLeft: () => (        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+          <Text>로고</Text>
+        </TouchableOpacity>), }} />
+          <Drawer.Screen name="Search" component={ Search } options={{ drawerLabel: '책 검색', title: '', unmountOnBlur: true, }} />
           <Drawer.Screen name="DrawerMyLibrary" component={ MyLibraryStack } options={{ drawerLabel: '내 서재', title: '' }} />
         </Drawer.Navigator>
       </NavigationContainer>
@@ -126,10 +105,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: theme.black,
     paddingVertical: 10,
-  },
-  image: {
-    width: 20,
-    height: 20,
   },
 });
 export default App;
