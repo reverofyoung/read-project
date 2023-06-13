@@ -6,6 +6,7 @@ const baseStyle = StyleSheet.create({
         flex: 1,
         height: '100%' ,
         paddingHorizontal: 20, 
+        // backgroundColor: 'blue'
     },
     pageTitleArea: {
         // backgroundColor: '#DA7B7B',

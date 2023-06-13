@@ -1,26 +1,91 @@
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text, Image, Dimensions } from "react-native";
+import { useSelector } from "react-redux";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { ScrollView } from "react-native-web";
+
 import baseStyle from "../common/baseStyle";
+import theme from "../common/colors";
+
+const SCREEN_HEIGHT = Dimensions.get('window').height;
+const SCREEN_WIDTH = Dimensions.get('window').width;
+// console.log('SCREEN_WIDTH:', SCREEN_WIDTH);
 
 function Home({navigation}) {
+  const totalBooks = useSelector((state) => state.book.books);
+  const totalBooksCount = totalBooks.length;
+  console.log('내 서재에 저장된 책:', totalBooks);
+
+  const calcHeight = SCREEN_HEIGHT - 150;
 
   return (
     <View style={[ baseStyle.pageLayout ]}>
-      <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-
+      {/* 메인 텍스트 영역 */}
+      <View style={ styles.mainTextArea }>
+        {
+          totalBooksCount !== 0 ?
+          <View>
+            <Text style={ styles.mainText }>현재 읽고 있는 책은</Text>
+            <Text style={ styles.mainText }>{ totalBooksCount }권 입니다.</Text>
+          </View>: <Text style={ styles.mainText }>현재 읽고 있는 책이 없어요.</Text>
+        }
+        
       </View>
-    </View>
+      
+      {/* 메인 컨텐츠 영역 */}
+      <View style={[styles.mainContentsArea, { height: calcHeight }] }>
+        {/* 스크롤 영역 */}
+        <ScrollView
+          pagingEnabled 
+          horizontal 
+          contentContainerStyle={ styles.scrollArea }
+        >
+          {
+            totalBooksCount !== 0 ? totalBooks.map((thisResult) => {
+              const datakey = thisResult.isbn;
+              return(
+                <TouchableOpacity key={ datakey } style={{ marginRight: 50 }}>
+                    {/* <Image source={{ url: thisResult.thumbnail }} style={ styles.bookImage } /> */}
+                    <View style={ styles.bookImage }></View>
+                    <Text style={ styles.bookTitle }>{ thisResult.title }</Text>
+                </TouchableOpacity>
+              )
+            }) : 
+            <View>
+              <Text> 비어있는 이미지.. </Text>
+            </View>
+          }
+      </ScrollView>
+      </View>
+    </View> 
   );
 }
   
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
+  mainTextArea: {
+    // backgroundColor: 'yellow',
+    height: 100,
+    justifyContent: 'flex-end',
+  },
+  mainText: {
+    fontSize: 24,
+  },
+  mainContentsArea: {
+   
+  },
+  scrollArea: {
     alignItems: 'center',
-    justifyContent: 'center',
-  }
+    flex: 1,
+  },
+  bookImage: {
+    backgroundColor: theme.mainRed,
+    height: 350, 
+    width: 250,
+  },
+  bookTitle:{
+    lineHeight: 50,
+    textAlign: 'center',
+  },
 });
 
 export default Home;
