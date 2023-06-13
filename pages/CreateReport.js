@@ -6,7 +6,7 @@ import { ScrollView, TextInput, TouchableOpacity } from "react-native-gesture-ha
 import { useDispatch, useSelector } from "react-redux";
 import { Ionicons } from '@expo/vector-icons';
 
-import { addReport } from "../redux/bookSlice";
+import { addPreReport } from "../redux/bookSlice";
 import theme from '../common/colors';
 import baseStyle from "../common/baseStyle";
 
@@ -25,13 +25,12 @@ function CreateReport({ navigation }) {
     const SCREEN_HEIGHT = Dimensions.get('window').height;
     const calcHeight = SCREEN_HEIGHT - 150;
 
-    useEffect(() => {// newBookArray의 값이 변경될 때 마다 실행
+    useEffect(() => { // newBookArray의 값이 변경될 때 마다 실행
         setNewBookData();
     }, [ newBookArray ]);
 
     // 컨텐츠 보이기, 숨기기
     const toggleButton = () => {
-        // console.log('contentVisible', contentVisible);
         setContentVisible(!contentVisible);
     }; 
 
@@ -42,13 +41,13 @@ function CreateReport({ navigation }) {
     const saveReport = () => {
         if(reportContent !== ''){
             const newReportData = {
-                content: reportContent,
+                preReport: reportContent,
                 date: currentDate,
             };
             console.log('저장된 코멘트', newReportData);
 
             setReportContent('');
-            dispatch(addReport({ isbn: preSelectedBook.isbn, newReportData }));
+            dispatch(addPreReport({ isbn: preSelectedBook.isbn, newReportData }));
     
         }else{
             alert('코멘트를 작성해주세요!');
@@ -67,6 +66,7 @@ function CreateReport({ navigation }) {
                 <Text>{ preSelectedBook.readingStatus === 'reading' ? '읽는중' : '쓰는중' }</Text>
             </View>
             <View style={ styles.contentArea }>
+                {/* 컨텐츠 타이틀 영역 */}
                 <View style={ styles.contentTitleArea }>
                     <Text style={ styles.contentTitle }>읽기 전 코멘트</Text>
                     <TouchableOpacity onPress={ toggleButton }>
@@ -78,13 +78,14 @@ function CreateReport({ navigation }) {
                     </TouchableOpacity>
                 </View>
 
+                {/* 컨텐츠 영역 */}
                 <View style={{  height: '90%', display: contentVisible === true ? 'flex' :'none' }}>
                     {
                         selectedBook.content !== undefined ? 
                         // 저장된 content가 있을 때
                         <View>
-                            <Text>{ selectedBook.date }</Text>
-                            <Text>{ selectedBook.content }</Text>
+                            {/* <Text>{ selectedBook.content.date }</Text>
+                            <Text>{ selectedBook.content.preReport }</Text> */}
                         </View> :
 
                         // 저장된 content가 없을 때
@@ -99,8 +100,10 @@ function CreateReport({ navigation }) {
                                     value={ reportContent }
                                 />
                             </View>
+
+                            {/* 저장하기 버튼 */}
                             <View style={ styles.saveButton }>
-                                <TouchableOpacity onPress={ saveReport } >
+                                <TouchableOpacity onPress={ saveReport } name='preSave' >
                                    <View style={[ baseStyle.alignCenter, styles.saveButton ]}>
                                         <Text style={{ color: theme.mainRed }}>등록하기</Text>
                                    </View>
@@ -128,7 +131,7 @@ const styles = StyleSheet.create({
   },
   contentArea: {
     flex: 7,
-    backgroundColor: '#AF4545'
+    // backgroundColor: '#AF4545'
   },
   contentTitleArea: {
     borderBottomWidth: '1px', 
