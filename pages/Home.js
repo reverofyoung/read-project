@@ -7,16 +7,15 @@ import { ScrollView } from "react-native-web";
 import baseStyle from "../common/baseStyle";
 import theme from "../common/colors";
 
-const SCREEN_HEIGHT = Dimensions.get('window').height;
-const SCREEN_WIDTH = Dimensions.get('window').width;
 // console.log('SCREEN_WIDTH:', SCREEN_WIDTH);
 
 function Home({navigation}) {
+  const SCREEN_HEIGHT = Dimensions.get('window').height;
+  const calcHeight = SCREEN_HEIGHT - 150;
   const totalBooks = useSelector((state) => state.book.books);
   const totalBooksCount = totalBooks.length;
-  console.log('내 서재에 저장된 책:', totalBooks);
 
-  const calcHeight = SCREEN_HEIGHT - 150;
+  console.log('내 서재에 저장된 책:', totalBooks);
 
   return (
     <View style={[ baseStyle.pageLayout ]}>
@@ -45,14 +44,14 @@ function Home({navigation}) {
               const datakey = thisResult.isbn;
               return(
                 <TouchableOpacity key={ datakey } style={{ marginRight: 50 }}>
-                    {/* <Image source={{ url: thisResult.thumbnail }} style={ styles.bookImage } /> */}
-                    <View style={ styles.bookImage }></View>
-                    <Text style={ styles.bookTitle }>{ thisResult.title }</Text>
+                  {/* <Image source={{ url: thisResult.thumbnail }} style={ styles.bookImage } /> */}
+                  <View style={ styles.bookImage }></View>
+                  <Text style={ styles.bookTitle }>{ thisResult.title }</Text>
                 </TouchableOpacity>
               )
             }) : 
-            <View>
-              <Text> 비어있는 이미지.. </Text>
+            <View style={{ height: calcHeight, backgroundColor: 'grey' }}>
+              {/* <Text> 비어있는 이미지 </Text> */}
             </View>
           }
       </ScrollView>

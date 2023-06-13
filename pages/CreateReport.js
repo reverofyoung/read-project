@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import 'moment/locale/ko';
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, Text, Button, StyleSheet, Dimensions } from "react-native";
 import { ScrollView, TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import { Ionicons } from '@expo/vector-icons';
 
 import { addReport } from "../redux/bookSlice";
 import theme from '../common/colors';
+import baseStyle from "../common/baseStyle";
 
 function CreateReport({ navigation }) {
     const dispatch = useDispatch();
@@ -21,12 +22,16 @@ function CreateReport({ navigation }) {
     const date = new Date();
     const currentDate = moment(date).format('YYYY-MM-DD HH:mm');
 
+    const SCREEN_HEIGHT = Dimensions.get('window').height;
+    const calcHeight = SCREEN_HEIGHT - 150;
+
     useEffect(() => {// newBookArray의 값이 변경될 때 마다 실행
         setNewBookData();
     }, [ newBookArray ]);
 
+    // 컨텐츠 보이기, 숨기기
     const toggleButton = () => {
-        console.log('contentVisible', contentVisible);
+        // console.log('contentVisible', contentVisible);
         setContentVisible(!contentVisible);
     }; 
 
@@ -73,20 +78,7 @@ function CreateReport({ navigation }) {
                     </TouchableOpacity>
                 </View>
 
-
-                <View style={ styles.contentTitleArea }>
-                    <Text style={ styles.contentTitle }>읽는 중 코멘트</Text>
-                    <TouchableOpacity onPress={ toggleButton }>
-                        { 
-                            contentVisible === false ? 
-                            <Ionicons name="chevron-down" size={ 22 } color="black" /> :
-                            <Ionicons name="chevron-up" size={ 22 } color="black" /> 
-                        }
-                    </TouchableOpacity>
-                </View>
-
-
-                <View style={{ display: contentVisible === true ? 'flex' :'none' }}>
+                <View style={{  height: '90%', display: contentVisible === true ? 'flex' :'none' }}>
                     {
                         selectedBook.content !== undefined ? 
                         // 저장된 content가 있을 때
@@ -94,8 +86,9 @@ function CreateReport({ navigation }) {
                             <Text>{ selectedBook.date }</Text>
                             <Text>{ selectedBook.content }</Text>
                         </View> :
+
                         // 저장된 content가 없을 때
-                        <View style={{ justifyContent: 'space-between' }}>
+                        <View style={{ height: '100%', justifyContent: 'space-between' }}>
                             <View>
                                 <TextInput
                                     multiline={ true }
@@ -107,8 +100,10 @@ function CreateReport({ navigation }) {
                                 />
                             </View>
                             <View style={ styles.saveButton }>
-                                <TouchableOpacity>
-                                    <Button title="코멘트 등록하기" color={ theme.mainRed } onPress={ saveReport } />
+                                <TouchableOpacity onPress={ saveReport } >
+                                   <View style={[ baseStyle.alignCenter, styles.saveButton ]}>
+                                        <Text style={{ color: theme.mainRed }}>등록하기</Text>
+                                   </View>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -136,8 +131,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#AF4545'
   },
   contentTitleArea: {
+    borderBottomWidth: '1px', 
+    borderColor: theme.black, 
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingVertical: 5,
   },
   contentTitle: {
     fontSize: 18,
@@ -161,8 +159,10 @@ const styles = StyleSheet.create({
     paddingVertical: 40,
   },
   saveButton: {
+    borderColor: theme.mainRed,
+    borderRadius: 10,
+    borderWidth: '1px',
     height: 40,
-    justifyContent: 'flex-end',
   }
 });
 

@@ -78,12 +78,38 @@ const App = () => {
             headerShadowVisible: false,
           }}
         >
-          <Drawer.Screen name="Home" component={ Home } options={{ drawerLabel: '홈', title: '', unmountOnBlur: true,
-          headerLeft: () => (        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-          <Text>로고</Text>
-        </TouchableOpacity>), }} />
-          <Drawer.Screen name="Search" component={ Search } options={{ drawerLabel: '책 검색', title: '', unmountOnBlur: true, }} />
-          <Drawer.Screen name="DrawerMyLibrary" component={ MyLibraryStack } options={{ drawerLabel: '내 서재', title: '' }} />
+          <Drawer.Screen 
+            name="Home" 
+            component={ Home } 
+            options={{ 
+              drawerLabel: '홈', 
+              title: '', 
+              unmountOnBlur: true,
+              headerLeft: () => ( 
+                <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                  <Text>로고</Text>
+                </TouchableOpacity>
+              ), 
+            }} 
+          />
+          <Drawer.Screen 
+            name="Search" 
+            component={ Search } 
+            options={{ 
+              drawerLabel: '책 검색', 
+              title: '', 
+              unmountOnBlur: true, 
+            }} 
+          />
+          <Drawer.Screen 
+            name="DrawerMyLibrary" 
+            component={ MyLibraryStack } 
+            options={{ 
+              drawerLabel: '내 서재', 
+              title: '', 
+              unmountOnBlur: true, 
+            }} 
+          />
         </Drawer.Navigator>
       </NavigationContainer>
     </Provider>
