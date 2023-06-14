@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   inputStyle: {
-    borderBottomWidth: '2px', 
+    borderBottomWidth: 2, 
     borderColor: theme.black, 
     color: theme.black, 
     padding: 12, 

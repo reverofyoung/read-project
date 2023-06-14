@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import 'moment/locale/ko';
-import { View, Text, Button, StyleSheet, Dimensions } from "react-native";
+import { View, Text, Button, StyleSheet } from "react-native";
 import { ScrollView, TextInput, TouchableOpacity } from "react-native-gesture-handler";
 import { useDispatch, useSelector } from "react-redux";
 import { Ionicons } from '@expo/vector-icons';
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     // backgroundColor: '#AF4545'
   },
   contentTitleArea: {
-    borderBottomWidth: '1px', 
+    borderBottomWidth: 1, 
     borderColor: theme.black, 
     flexDirection: 'row',
     justifyContent: 'space-between',

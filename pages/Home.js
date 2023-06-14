@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, Image, Dimensions } from "react-native";
+import { View, StyleSheet, Text, Image, Dimensions, ScrollView } from "react-native";
 import { useSelector } from "react-redux";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { ScrollView } from "react-native-web";
+// import { ScrollView } from "react-native-web";
 
 import baseStyle from "../common/baseStyle";
 import theme from "../common/colors";
