@@ -127,7 +127,7 @@ function CreateReport({ navigation }) {
 
                             {/* 저장하기 버튼 */}
                             <View style={ styles.saveButton }>
-                                <TouchableOpacity onPress={ savePreReport } name='preSave' >
+                                <TouchableOpacity onPress={ savePreReport }>
                                    <View style={[ baseStyle.alignCenter, styles.saveButton ]}>
                                         <Text style={{ color: theme.mainRed }}>등록하기</Text>
                                    </View>
@@ -138,7 +138,7 @@ function CreateReport({ navigation }) {
                 </View>
             </View>  
             
-            {/* 읽기 전 */}
+            {/* 읽는 중 */}
             <View style={ styles.contentArea }>
                 {/* 컨텐츠 타이틀 영역 */}
                 <View style={ styles.contentTitleArea }>
@@ -152,7 +152,7 @@ function CreateReport({ navigation }) {
                     </TouchableOpacity>
                 </View>
                 
-                <View style={{ display: currContentVisible === true ? 'flex' :'none' }}>
+                <View style={{ display: currContentVisible === true ? 'flex' : 'none' }}>
                     {
                         bookContent?.preContent === undefined ? 
                         <View>
@@ -178,10 +178,9 @@ function CreateReport({ navigation }) {
                                             value={ reportContent }
                                         />
                                     </View>
-        
                                     
                                     <View style={ styles.saveButton }>
-                                        <TouchableOpacity onPress={ saveCurrReport } name='preSave' >
+                                        <TouchableOpacity onPress={ saveCurrReport }>
                                             <View style={[ baseStyle.alignCenter, styles.saveButton ]}>
                                                 <Text style={{ color: theme.mainRed }}>등록하기</Text>
                                             </View>
