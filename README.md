@@ -10,7 +10,7 @@
 ### 사용 언어
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![javascript](https://img.shields.io/badge/javascript-F7DF1E.svg?style=for-the-badge&logo=javascript&logoColor=white)
 ![React Native](https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![Redux](https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white)
 
@@ -20,7 +20,7 @@ React Native 사용법을 익히기 위해 진행한 토이 프로젝트로 독�
 
 도서에 대한 다양한 감상을 기록하게 하는 것이 목적으로, 
 
-'독서 전', '독서 중', '완독' 총 세 가지로 상태를 나누어 독서 일기 작성이 가능하며 특징으로는 
+'독서 전', '독서 중', '완독' 총 세 가지로 상태를 나누어 독서 일기 작성이 가능하며 특징은 아래와 같다.
 1. '독서 전' 일기를 반드시 작성해야만 '독서 중' 일기 작성 가능
 2. '완독' 일기를 작성하면 자동으로 독서 상태가 완독으로 변경
 
