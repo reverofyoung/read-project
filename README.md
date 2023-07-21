@@ -10,7 +10,7 @@
 <br />   
 
 > ### 사용 기술
-HTML, CSS, JavaScript, React Native, Redux Toolkit, Expo
+HTML, CSS, JavaScript, React Native, Redux Toolkit, Expo   
 <br /> 
 
 > ### 프로젝트 소개
