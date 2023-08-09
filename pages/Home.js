@@ -44,8 +44,8 @@ function Home({navigation}) {
               const datakey = thisResult.isbn;
               return(
                 <TouchableOpacity key={ datakey } style={{ marginRight: 50 }}>
-                  {/* <Image source={{ url: thisResult.thumbnail }} style={ styles.bookImage } /> */}
-                  <View style={ styles.bookImage }></View>
+                  <Image source={{ url: thisResult.thumbnail }} style={ styles.bookImage } />
+                  {/* <View style={ styles.bookImage }></View> */}
                   <Text style={ styles.bookTitle }>{ thisResult.title }</Text>
                 </TouchableOpacity>
               )
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bookImage: {
-    backgroundColor: theme.mainRed,
+    // backgroundColor: theme.mainRed,
     height: 350, 
     width: 250,
   },

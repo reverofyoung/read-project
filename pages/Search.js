@@ -16,7 +16,7 @@ function Search({ navigation: { navigate } }) {
   const SERACH_BOOK_API = "491f7507dab4e628fde67856003319a6";
   const totalBookData = useSelector((state) => state.book.books);
 
-  const [searcText, setSearcText] = useState('');
+  const [searchText, setSearchText] = useState('');
   const [responseBooksData, setResponseBooksData] = useState();
   const [searchBookResults, setSearchBookResults] = useState();  
   const [clickedBookData, setClickedBookData] = useState({});
@@ -32,7 +32,7 @@ function Search({ navigation: { navigate } }) {
 
   // 입력값 받아오기
   const onChangeText = (value) => {
-    setSearcText(value);
+    setSearchText(value);
   };
 
   // 검색한 책 데이터 받아오기
@@ -41,7 +41,7 @@ function Search({ navigation: { navigate } }) {
       method: "GET",
       url: "https://dapi.kakao.com/v3/search/book?target=title",
       params: { 
-        query: searcText,
+        query: searchText,
         size: 50,
       },
       headers:{
@@ -118,7 +118,7 @@ function Search({ navigation: { navigate } }) {
           onChangeText={ onChangeText }
           placeholder='도서명, 저자명으로 검색해주세요.'
           style={ styles.inputStyle }
-          value={ searcText }
+          value={ searchText }
         />
         <TouchableOpacity onPress={ getSearchBooksData }>
           <Text>검색</Text>

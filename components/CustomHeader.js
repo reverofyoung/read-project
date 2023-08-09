@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import { useRoute } from '@react-navigation/native';
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import theme from '../common/colors';
 
@@ -10,6 +10,7 @@ const CustomHeader = ({ navigation }) => {
   const route = useRoute();
 
     return (
+      
       <View style={ styles.header }>
         {
           route.name === 'Home' ? 
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
       paddingHorizontal: 20,
     },
     logo: {
-      // backgroundColor: theme.mainRed,
+      backgroundColor: theme.mainRed,
       height: 50,
       width: 100,
     },
